@@ -18,3 +18,7 @@ env:
     secret: firebase-sender-id
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
     secret: firebase-app-id
+  - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+    secret: measurement-id
+  - variable: FIREBASE_SERVICE_ACCOUNT
+    secret: firebase-service-account
