@@ -5,5 +5,18 @@
   },
   "storage": {
     "rules": "storage.rules"
+  },
+  "hosting": {
+    "source": ".",
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "function": "nextServer"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }

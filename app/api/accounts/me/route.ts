@@ -1,7 +1,7 @@
+import { ACCOUNTS } from '@/lib/firebase/collections';
 import { NextRequest, NextResponse } from 'next/server';
 import { adminFirestore } from '@/lib/firebase/firebaseAdmin';
 import { getUserFromToken } from '@/lib/firebase/adminAuth';
-import { ACCOUNTS } from '@/lib/firebase/collections';
 import { Account, NewAccountSchema } from '@/lib/schemas/account';
 
 const FIVE_GB_IN_BYTES = 5368709120;
