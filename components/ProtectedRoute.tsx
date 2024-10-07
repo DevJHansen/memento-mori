@@ -111,5 +111,9 @@ export default function ProtectedRoute({ children }: Props) {
     return <CompleteSignUp />;
   }
 
-  return null;
+  return (
+    <div className="flex h-screen justify-center items-center">
+      <Loading />
+    </div>
+  );
 }

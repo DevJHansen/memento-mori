@@ -20,6 +20,6 @@ export const FormFieldLabel = ({
     htmlFor={id}
   >
     {label}
-    {required && label && <span className="ml-2 text-primary">*</span>}
+    {required && label && <span className="ml-2 text-secondary">*</span>}
   </label>
 );

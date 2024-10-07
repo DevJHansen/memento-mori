@@ -23,7 +23,7 @@ export default function Avatar({ src, alt = 'User Avatar', size = 32 }: Props) {
           height={size}
         />
       ) : (
-        <FaUserCircle size={size} className="text-gray-500" />
+        <FaUserCircle size={size} className="text-accent" />
       )}
     </div>
   );

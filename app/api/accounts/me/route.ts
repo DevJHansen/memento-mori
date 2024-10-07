@@ -4,6 +4,8 @@ import { getUserFromToken } from '@/lib/firebase/adminAuth';
 import { ACCOUNTS } from '@/lib/firebase/collections';
 import { Account, NewAccountSchema } from '@/lib/schemas/account';
 
+const FIVE_GB_IN_BYTES = 5368709120;
+
 export async function GET(req: NextRequest) {
   const user = await getUserFromToken(req);
 
@@ -59,12 +61,25 @@ export async function POST(req: NextRequest) {
     }
     const newAccountData = validationResult.data;
 
+    const now = new Date();
+
     const newAccount: Account = {
       firstName: newAccountData.firstName,
       surname: newAccountData.surname,
       dob: newAccountData.dob,
-      createdAt: +new Date(),
+      plan: newAccountData.plan,
+      createdAt: {
+        unix: now.getTime(),
+        timestamp: now.toISOString(),
+        day: now.getUTCDate(),
+        month: now.getUTCMonth() + 1,
+        year: now.getUTCFullYear(),
+      },
       uid: user.uid,
+      storageUsage: {
+        bytesUsed: 0,
+        maxUsage: FIVE_GB_IN_BYTES,
+      },
     };
 
     await adminFirestore.collection(ACCOUNTS).doc(user.uid).create(newAccount);

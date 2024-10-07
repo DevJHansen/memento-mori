@@ -21,7 +21,7 @@ interface FormInputProps {
 }
 
 const formInput =
-  ' w-full px-4 py-2 text-white leading-tight focus:outline-none rounded-md bg-secondary h-10';
+  ' w-full px-4 py-2 text-white leading-tight focus:outline-none rounded-md bg-backgroundLight h-10';
 const formDisabled = 'bg-transparent border-[2px]';
 
 export const insertNewLineInTextArea = (

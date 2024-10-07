@@ -48,7 +48,14 @@ export default function CompleteSignUp() {
       const body: NewAccount = {
         firstName: formData.firstName,
         surname: formData.surname,
-        dob: Math.floor(dateObject.getTime()),
+        dob: {
+          unix: Math.floor(dateObject.getTime()),
+          timestamp: dateObject.toISOString(),
+          day: dateObject.getUTCDate(),
+          month: dateObject.getUTCMonth() + 1,
+          year: dateObject.getUTCFullYear(),
+        },
+        plan: 'pro',
       };
 
       const res = await fetch('/api/accounts/me', {
