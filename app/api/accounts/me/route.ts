@@ -4,8 +4,6 @@ import { adminFirestore } from '@/lib/firebase/firebaseAdmin';
 import { getUserFromToken } from '@/lib/firebase/adminAuth';
 import { Account, NewAccountSchema } from '@/lib/schemas/account';
 
-const FIVE_GB_IN_BYTES = 5368709120;
-
 export async function GET(req: NextRequest) {
   const user = await getUserFromToken(req);
 
@@ -78,7 +76,7 @@ export async function POST(req: NextRequest) {
       uid: user.uid,
       storageUsage: {
         bytesUsed: 0,
-        maxUsage: FIVE_GB_IN_BYTES,
+        maxUsage: 5368709120, // 5GB in bytes
       },
     };
 
