@@ -13,6 +13,7 @@ export const MomentSchema = z.object({
     .optional(),
   content: z.string(),
   uid: z.string(),
+  week: z.string(),
 });
 
 export type Moment = z.infer<typeof MomentSchema>;
