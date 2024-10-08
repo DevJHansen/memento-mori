@@ -58,15 +58,15 @@ export async function POST(req: NextRequest) {
     const [heroImageUrl, thumbnailUrl, dotUrl] = await Promise.all([
       uploadImageToGCS(
         heroBuffer,
-        `${user.uid}/moments/${week}/hero/${uid}_hero.jpg`
+        `${user.uid}/moments/${week}/hero/${uid}_hero.webp`
       ),
       uploadImageToGCS(
         thumbnailBuffer,
-        `${user.uid}/moments/${week}/hero/${uid}_thumbnail.jpg`
+        `${user.uid}/moments/${week}/hero/${uid}_thumbnail.webp`
       ),
       uploadImageToGCS(
         dotBuffer,
-        `${user.uid}/moments/${week}/hero/${uid}_dot.jpg`
+        `${user.uid}/moments/${week}/hero/${uid}_dot.webp`
       ),
     ]);
 

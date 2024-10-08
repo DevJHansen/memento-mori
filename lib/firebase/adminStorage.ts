@@ -31,5 +31,5 @@ export async function resizeImage(
     withoutEnlargement: true,
   };
 
-  return image.resize(resizeOptions).toFormat('jpeg').toBuffer();
+  return image.resize(resizeOptions).toFormat('webp').toBuffer();
 }

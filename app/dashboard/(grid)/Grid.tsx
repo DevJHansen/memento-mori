@@ -10,9 +10,7 @@ import { MomentCache } from '@/schemas/moment';
 import { getAuthToken } from '@/lib/firebase/auth';
 import { LoadingStatus } from '@/schemas/loading';
 import { Loading } from '@/components/Loading';
-import Image from 'next/image';
-import { fetchImage } from '@/lib/firebase/storage';
-import Hammer from 'hammerjs';
+import { DotImage } from './DotImage';
 
 interface MomentCacheState {
   status: LoadingStatus;
@@ -27,40 +25,6 @@ export const momentCacheState = atom<MomentCacheState>({
   },
 });
 
-const DotImage = ({
-  url,
-  alt,
-  scale,
-}: {
-  url: string;
-  alt: string;
-  scale: number;
-}) => {
-  const [imageUrl, setImageUrl] = useState('');
-
-  useEffect(() => {
-    const loadImage = async () => {
-      const authUrl = await fetchImage(url);
-      setImageUrl(authUrl ?? '');
-    };
-    loadImage();
-  }, [url]);
-
-  return imageUrl ? (
-    <Image
-      src={imageUrl}
-      alt={alt}
-      width={scale}
-      height={scale}
-      className="rounded-full"
-    />
-  ) : (
-    <div
-      className={`w-[${scale}px] h-[${scale}px] bg-primary rounded-full animate-ping`}
-    />
-  );
-};
-
 export default function Grid() {
   const [account] = useRecoilState(accountState);
   const [weeksLived, setWeeksLived] = useState<number | null>(null);
@@ -68,36 +32,6 @@ export default function Grid() {
   const [, createMoment] = useRecoilState(addMomentState);
   const [cache, setCache] = useRecoilState(momentCacheState);
   const [scale, setScale] = useState(1);
-  const gridRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const gridElement = gridRef.current;
-
-    if (gridElement) {
-      const hammer = new Hammer(gridElement);
-
-      hammer.get('pinch').set({ enable: true });
-
-      let lastScale = 1;
-
-      hammer.on('pinch', (event) => {
-        let newScale = lastScale * event.scale;
-
-        if (newScale > 48) newScale = 48;
-        if (newScale < 1) newScale = 1;
-
-        setScale(newScale);
-      });
-
-      hammer.on('pinchend', () => {
-        lastScale = scale;
-      });
-
-      return () => {
-        hammer.off('pinch pinchend');
-      };
-    }
-  }, [scale]);
 
   useEffect(() => {
     const getCache = async () => {
