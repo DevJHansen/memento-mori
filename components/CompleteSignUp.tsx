@@ -5,7 +5,7 @@ import { FormInput } from './FormInput';
 import { Button } from './Button';
 import { auth } from '@/lib/firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { Account, NewAccount } from '@/lib/schemas/account';
+import { Account, NewAccount } from '@/schemas/account';
 import { getAuthToken } from '@/lib/firebase/auth';
 import { useRecoilState } from 'recoil';
 import { accountState } from './ProtectedRoute';

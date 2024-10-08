@@ -5,30 +5,15 @@ import { accountState } from '@/components/ProtectedRoute';
 import { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement } from 'chart.js';
+import {
+  getWeeksLived,
+  getLifePercentage,
+  getWeeksRemaining,
+  LIFE_EXPECTANCY_WEEKS,
+} from '../(utils)/utils';
 
 Chart.register(ArcElement);
 
-const LIFE_EXPECTANCY_YEARS = 75; // Average life expectancy
-const WEEKS_IN_YEAR = 52.1775; // Including leap years
-const LIFE_EXPECTANCY_WEEKS = LIFE_EXPECTANCY_YEARS * WEEKS_IN_YEAR;
-
-const getWeeksLived = (birthTimestamp: number): number => {
-  const currentDate = new Date();
-  const birthDate = new Date(birthTimestamp);
-  const diffInMilliseconds = currentDate.getTime() - birthDate.getTime();
-  const weeksLived = diffInMilliseconds / (1000 * 60 * 60 * 24 * 7);
-  return Math.floor(weeksLived);
-};
-
-const getLifePercentage = (weeksLived: number): number => {
-  return (weeksLived / LIFE_EXPECTANCY_WEEKS) * 100;
-};
-
-const getWeeksRemaining = (weeksLived: number): number => {
-  return Math.floor(LIFE_EXPECTANCY_WEEKS - weeksLived);
-};
-
-// Progress Bar for Weeks Lived and Remaining
 function ProgressBar({ percentage }: { percentage: number }) {
   return (
     <div className="w-full bg-foreground rounded-full h-4 mb-4">
@@ -40,7 +25,6 @@ function ProgressBar({ percentage }: { percentage: number }) {
   );
 }
 
-// Pie chart for Life Percentage
 function LifePercentagePie({ percentage }: { percentage: number }) {
   const data = {
     labels: ['Life Lived', 'Remaining'],

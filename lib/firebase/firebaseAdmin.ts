@@ -10,3 +10,4 @@ if (!admin.apps.length) {
 
 export const adminFirestore = admin.firestore();
 export const adminAuth = admin.auth();
+export const adminStorage = admin.storage();

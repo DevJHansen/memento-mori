@@ -4,14 +4,15 @@ import { auth } from '@/lib/firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Loading } from './Loading';
 import { useRouter } from 'next/navigation';
-import { Account } from '@/lib/schemas/account';
+import { Account } from '@/schemas/account';
 import { atom, useRecoilState } from 'recoil';
 import { useEffect } from 'react';
 import { getAuthToken } from '@/lib/firebase/auth';
 import CompleteSignUp from './CompleteSignUp';
+import { LoadingStatus } from '@/schemas/loading';
 
 export const accountState = atom<{
-  status: 'initial' | 'loading' | 'success' | 'error';
+  status: LoadingStatus;
   account: null | Account;
 }>({
   key: 'accountState',

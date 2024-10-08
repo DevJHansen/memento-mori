@@ -6,6 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { Button } from './Button';
+import { LoadingSpinner } from './LoadingSpinner';
 
 interface Props {
   className: string;
@@ -13,7 +14,7 @@ interface Props {
 
 export default function AuthButton({ className }: Props) {
   const router = useRouter();
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   const signIn = async () => {
     try {
@@ -24,6 +25,10 @@ export default function AuthButton({ className }: Props) {
       console.error(error);
     }
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   if (user) {
     return (

@@ -2,7 +2,7 @@ import { ACCOUNTS } from '@/lib/firebase/collections';
 import { NextRequest, NextResponse } from 'next/server';
 import { adminFirestore } from '@/lib/firebase/firebaseAdmin';
 import { getUserFromToken } from '@/lib/firebase/adminAuth';
-import { Account, NewAccountSchema } from '@/lib/schemas/account';
+import { Account, NewAccountSchema } from '@/schemas/account';
 
 export async function GET(req: NextRequest) {
   const user = await getUserFromToken(req);
