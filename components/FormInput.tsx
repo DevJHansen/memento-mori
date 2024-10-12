@@ -60,13 +60,15 @@ export const FormInput = ({
 }: FormInputProps) => {
   return (
     <div className="mb-4 mt-auto">
-      <FormFieldLabel
-        error={error}
-        id={id}
-        label={label}
-        required={required}
-        labelStyle={labelStyle}
-      />
+      {label && (
+        <FormFieldLabel
+          error={error}
+          id={id}
+          label={label}
+          required={required}
+          labelStyle={labelStyle}
+        />
+      )}
       {type === 'textarea' ? (
         <textarea
           className={`${formInput} ${disabled && formDisabled} ${className}`}

@@ -6,13 +6,14 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { MdMenu, MdClose } from 'react-icons/md';
 import { auth } from '@/lib/firebase/firebase';
 import Avatar from './Avatar';
+import Link from 'next/link';
 
 export default function AuthNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user] = useAuthState(auth);
 
   return (
-    <nav className="bg-background shadow-foreground shadow-sm border-foreground fixed w-screen top-0">
+    <nav className="bg-background shadow-foreground shadow-sm border-foreground fixed w-screen top-0 z-50">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center justify-between w-full">
@@ -21,6 +22,18 @@ export default function AuthNavbar() {
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
+                <Link
+                  className="text-white  px-3 py-2 rounded-md text-sm font-medium"
+                  href="/app"
+                >
+                  Home
+                </Link>
+                <Link
+                  className="text-white  px-3 py-2 rounded-md text-sm font-medium"
+                  href="/app/grid"
+                >
+                  Grid
+                </Link>
                 <button
                   className="text-white  px-3 py-2 rounded-md text-sm font-medium"
                   onClick={() => signOut(auth)}
@@ -49,6 +62,18 @@ export default function AuthNavbar() {
         id="mobile-menu"
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-right">
+          <Link
+            className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
+            href="/app"
+          >
+            Home
+          </Link>
+          <Link
+            className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
+            href="/app/grid"
+          >
+            Grid
+          </Link>
           <button
             className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
             onClick={() => signOut(auth)}

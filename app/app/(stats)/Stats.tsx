@@ -10,7 +10,7 @@ import {
   getLifePercentage,
   getWeeksRemaining,
   LIFE_EXPECTANCY_WEEKS,
-} from '../(utils)/utils';
+} from '../../../utils/lifeUtils';
 
 Chart.register(ArcElement);
 
@@ -70,7 +70,7 @@ export default function Stats() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-0 max-h-screen overflow-scroll">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-0 max-h-screen overflow-auto">
       {/* Weeks Lived */}
       {weeksLived !== null && (
         <div className="h-fit p-6 bg-backgroundLight rounded-lg shadow-md text-center">

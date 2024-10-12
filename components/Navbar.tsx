@@ -17,7 +17,7 @@ export default function Navbar() {
     try {
       await signInWithPopup(auth, googleProvider);
 
-      router.push('/dashboard');
+      router.push('/app');
     } catch (error) {
       console.error(error);
     }
@@ -36,9 +36,9 @@ export default function Navbar() {
                 {user ? (
                   <Link
                     className="text-white  px-3 py-2 rounded-md text-sm font-medium"
-                    href="/dashboard"
+                    href="/app"
                   >
-                    Dashboard
+                    Home
                   </Link>
                 ) : (
                   <button
@@ -81,9 +81,9 @@ export default function Navbar() {
           {user ? (
             <Link
               className="text-white  block px-3 py-2 rounded-md text-base font-medium"
-              href="/dashboard"
+              href="/app"
             >
-              Dashboard
+              Home
             </Link>
           ) : (
             <button

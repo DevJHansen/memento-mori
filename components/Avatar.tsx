@@ -21,6 +21,7 @@ export default function Avatar({ src, alt = 'User Avatar', size = 32 }: Props) {
           className="rounded-full object-cover"
           width={size}
           height={size}
+          priority
         />
       ) : (
         <FaUserCircle size={size} className="text-accent" />

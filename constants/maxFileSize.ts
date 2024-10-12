@@ -1,0 +1,2 @@
+export const DEFAULT_MAX_IMAGE_SIZE = 5242880;
+export const DEFAULT_MAX_IMAGE_SIZE_TEXT = '5 MB';

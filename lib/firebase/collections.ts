@@ -1,3 +1,3 @@
 export const ACCOUNTS = 'accounts';
-export const MOMENTS = 'moments';
-export const MOMENTS_CACHE = 'momentsCache';
+export const MEMENTOS = 'mementos';
+export const MEMENTOS_CACHE = 'mementosCache';

@@ -90,7 +90,7 @@ export default function CompleteSignUp() {
     formData.dateOfBirth && formData.firstName && formData.surname;
 
   return (
-    <div className="h-screen overflow-scroll flex justify-center items-center">
+    <div className="h-screen overflow-auto flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className="space-y-8 w-4/5 md:w-1/2 lg:w-1/4"

@@ -33,3 +33,15 @@ export async function resizeImage(
 
   return image.resize(resizeOptions).toFormat('webp').toBuffer();
 }
+
+export async function deleteFileFromGCS(fileName: string): Promise<void> {
+  const bucket = adminStorage.bucket(
+    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+  );
+  const file = bucket.file(fileName);
+
+  await file.delete().catch((error) => {
+    console.error(`Failed to delete file ${fileName}:`, error);
+    throw new Error(`Error deleting file: ${error.message}`);
+  });
+}

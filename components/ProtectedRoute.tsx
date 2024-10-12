@@ -9,10 +9,10 @@ import { atom, useRecoilState } from 'recoil';
 import { useEffect } from 'react';
 import { getAuthToken } from '@/lib/firebase/auth';
 import CompleteSignUp from './CompleteSignUp';
-import { LoadingStatus } from '@/schemas/loading';
+import { LoadingState } from '@/schemas/loading';
 
 export const accountState = atom<{
-  status: LoadingStatus;
+  status: LoadingState;
   account: null | Account;
 }>({
   key: 'accountState',

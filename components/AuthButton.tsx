@@ -20,7 +20,7 @@ export default function AuthButton({ className }: Props) {
     try {
       await signInWithPopup(auth, googleProvider);
 
-      router.push('/dashboard');
+      router.push('/app');
     } catch (error) {
       console.error(error);
     }
@@ -32,8 +32,8 @@ export default function AuthButton({ className }: Props) {
 
   if (user) {
     return (
-      <Link href="/dashboard">
-        <Button text={'Go to Dashboard'} className={className} />
+      <Link href="/app">
+        <Button text={'Go to App'} className={className} />
       </Link>
     );
   }

@@ -1,5 +1,5 @@
 import { getUserFromToken } from '@/lib/firebase/adminAuth';
-import { MOMENTS_CACHE } from '@/lib/firebase/collections';
+import { MEMENTOS_CACHE } from '@/lib/firebase/collections';
 import { adminFirestore } from '@/lib/firebase/firebaseAdmin';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -10,9 +10,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const momentCacheRef = adminFirestore.collection(MOMENTS_CACHE).doc(user.uid);
+  const mementoCacheRef = adminFirestore
+    .collection(MEMENTOS_CACHE)
+    .doc(user.uid);
 
-  const cache = await momentCacheRef.get();
+  const cache = await mementoCacheRef.get();
 
   if (!cache.exists) {
     return NextResponse.json({ message: 'Cache not found' }, { status: 404 });
