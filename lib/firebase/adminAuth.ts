@@ -1,6 +1,5 @@
 import { adminAuth } from './firebaseAdmin';
 import { DecodedIdToken } from 'firebase-admin/auth';
-import { NextApiRequest } from 'next';
 import { NextRequest } from 'next/server';
 
 export const getUserFromToken = async (
