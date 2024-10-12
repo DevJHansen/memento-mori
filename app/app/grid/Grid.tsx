@@ -40,10 +40,6 @@ export default function Grid() {
   const [cache, setCache] = useRecoilState(mementoCacheState);
   const [scale, setScale] = useState(1);
   const gridRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState<{ top: boolean; left: boolean }>({
-    top: true,
-    left: true,
-  });
 
   useEffect(() => {
     const getCache = async () => {
