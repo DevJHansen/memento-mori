@@ -34,6 +34,18 @@ export default function AuthNavbar() {
                 >
                   Grid
                 </Link>
+                <Link
+                  className="text-white  px-3 py-2 rounded-md text-sm font-medium"
+                  href="/app/account"
+                >
+                  Account
+                </Link>
+                <Link
+                  className="text-white  px-3 py-2 rounded-md text-sm font-medium"
+                  href="/app/timeline"
+                >
+                  Timeline
+                </Link>
                 <button
                   className="text-white  px-3 py-2 rounded-md text-sm font-medium"
                   onClick={() => signOut(auth)}
@@ -73,6 +85,18 @@ export default function AuthNavbar() {
             href="/app/grid"
           >
             Grid
+          </Link>
+          <Link
+            className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
+            href="/app/account"
+          >
+            Account
+          </Link>
+          <Link
+            className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
+            href="/app/timeline"
+          >
+            Timeline
           </Link>
           <button
             className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"

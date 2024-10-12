@@ -17,7 +17,7 @@ export const MementoSchema = z.object({
   updatedAt: dateObject.optional(),
   heroImage: ImageSchema,
   uid: z.string(),
-  week: z.string(),
+  week: z.number(),
   userId: z.string(),
 });
 

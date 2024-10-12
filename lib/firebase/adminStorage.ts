@@ -45,3 +45,20 @@ export async function deleteFileFromGCS(fileName: string): Promise<void> {
     throw new Error(`Error deleting file: ${error.message}`);
   });
 }
+
+export async function deleteFolder(folderName: string): Promise<void> {
+  const bucket = adminStorage.bucket(
+    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+  );
+  const [files] = await bucket.getFiles({ prefix: folderName });
+
+  if (files.length === 0) {
+    console.log(`No files found in folder ${folderName}`);
+    return;
+  }
+
+  const deletePromises = files.map((file) => file.delete());
+  await Promise.all(deletePromises);
+
+  console.log(`All files in folder ${folderName} have been deleted.`);
+}

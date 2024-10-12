@@ -86,8 +86,14 @@ export default function CompleteSignUp() {
     }
   };
 
+  const timestampNow = +new Date();
+  const selectedDateTimestamp = +new Date(formData.dateOfBirth);
+
   const isFormValid =
-    formData.dateOfBirth && formData.firstName && formData.surname;
+    formData.dateOfBirth &&
+    formData.firstName &&
+    formData.surname &&
+    selectedDateTimestamp < timestampNow;
 
   return (
     <div className="h-screen overflow-auto flex justify-center items-center">

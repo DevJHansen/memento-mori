@@ -6,12 +6,18 @@ interface Props {
   src?: string | null;
   alt?: string;
   size?: number;
+  className?: string;
 }
 
-export default function Avatar({ src, alt = 'User Avatar', size = 32 }: Props) {
+export default function Avatar({
+  src,
+  alt = 'User Avatar',
+  size = 32,
+  className = '',
+}: Props) {
   return (
     <div
-      className="flex items-center justify-center bg-gray-200 rounded-full"
+      className={`flex items-center justify-center bg-gray-200 rounded-full ${className}`}
       style={{ width: size, height: size }}
     >
       {src ? (

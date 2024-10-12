@@ -1,5 +1,12 @@
-import { MementoCache } from '@/schemas/memento';
+import { Memento, MementoCache } from '@/schemas/memento';
 import { getAuthToken } from '../firebase/auth';
+
+export interface GetMementosResult {
+  totalDoc: number;
+  totalPages: number;
+  page: number;
+  results: Memento[];
+}
 
 export const getMementoCache = async (): Promise<MementoCache> => {
   try {
@@ -9,6 +16,34 @@ export const getMementoCache = async (): Promise<MementoCache> => {
     }
 
     const res = await fetch('/api/mementos/cache', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const errorDetails = await res.text();
+      throw new Error(
+        `Error: ${res.status} - ${res.statusText}. ${errorDetails}`
+      );
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error('Error fetching cache:', error);
+    throw error;
+  }
+};
+
+export const getMementos = async (page: number): Promise<GetMementosResult> => {
+  try {
+    const token = await getAuthToken();
+    if (!token) {
+      throw new Error('Unable to retrieve authentication token.');
+    }
+
+    const res = await fetch('/api/mementos', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

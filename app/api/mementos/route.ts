@@ -11,6 +11,57 @@ import {
   DEFAULT_MAX_IMAGE_SIZE,
   DEFAULT_MAX_IMAGE_SIZE_TEXT,
 } from '@/constants/maxFileSize';
+import { Account } from '@/schemas/account';
+
+export async function GET(req: NextRequest) {
+  const user = await getUserFromToken(req);
+
+  if (user === null) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const { searchParams } = new URL(req.url);
+    const limit = 10;
+    let page = 1;
+    const pageParam = searchParams.get('page');
+
+    if (pageParam && parseInt(pageParam)) {
+      if (parseInt(pageParam) < 1) {
+        return NextResponse.json({ message: 'Invalid page' }, { status: 400 });
+      }
+      page = parseInt(pageParam);
+    }
+
+    const offsetMultiplier = page - 1;
+    const mementosRef = adminFirestore
+      .collection(MEMENTOS)
+      .where('userId', '==', user.uid);
+
+    const [totalMementos, getMementos] = await Promise.all([
+      (await mementosRef.count().get()).data().count,
+      await mementosRef
+        .orderBy('week', 'desc')
+        .offset(offsetMultiplier * limit)
+        .limit(limit)
+        .get(),
+    ]);
+
+    const totalPages = Math.ceil(totalMementos / limit);
+    const docs = getMementos.docs.map((doc) => doc.data());
+
+    return NextResponse.json(
+      { totalDoc: totalMementos, totalPages, page, results: docs },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error creating memento:', error);
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(req: NextRequest) {
   const user = await getUserFromToken(req);
@@ -24,17 +75,25 @@ export async function POST(req: NextRequest) {
     const formSchema = z.object({
       title: z.string().min(1, 'Title is required'),
       bodyContent: z.string().min(1, 'Body content is required'),
-      week: z.string(),
+      week: z.number(),
       heroImageFile: z.instanceof(File).refine((file) => file.size > 0, {
         message: 'Hero image is required',
       }),
     });
 
     const body = await req.formData();
+    const getWeek = body.get('week')?.toString();
+
+    console.log(getWeek);
+
+    if (!getWeek) {
+      return NextResponse.json({ message: 'Invalid week' }, { status: 400 });
+    }
+
     const parsedData = {
       title: body.get('title')?.toString() || '',
       bodyContent: body.get('body')?.toString() || '',
-      week: body.get('week')?.toString() || '',
+      week: parseInt(getWeek),
       heroImageFile: body.get('heroImage') as File,
     };
 
@@ -69,6 +128,21 @@ export async function POST(req: NextRequest) {
     ]);
 
     const now = new Date();
+    const accountRef = adminFirestore.collection(ACCOUNTS).doc(user.uid);
+    const account = (await accountRef.get()).data() as Account;
+
+    const totalSize =
+      heroImageFile.size + thumbnailBuffer.length + dotBuffer.length;
+
+    if (
+      totalSize + account.storageUsage.bytesUsed >
+      account.storageUsage.maxUsage
+    ) {
+      return NextResponse.json(
+        { message: 'Storage limit reached' },
+        { status: 400 }
+      );
+    }
 
     const [heroImageUrl, thumbnailUrl, dotUrl] = await Promise.all([
       uploadImageToGCS(
@@ -84,9 +158,6 @@ export async function POST(req: NextRequest) {
         `${user.uid}/mementos/${week}/hero/${uid}_${now}_dot.webp`
       ),
     ]);
-
-    const totalSize =
-      heroImageFile.size + thumbnailBuffer.length + dotBuffer.length;
 
     const createdAt = {
       unix: Math.floor(now.getTime() / 1000),
@@ -119,7 +190,6 @@ export async function POST(req: NextRequest) {
       },
     };
 
-    const accountRef = adminFirestore.collection(ACCOUNTS).doc(user.uid);
     const mementoRef = adminFirestore.collection(MEMENTOS).doc(uid);
     const mementoCacheRef = adminFirestore
       .collection(MEMENTOS_CACHE)

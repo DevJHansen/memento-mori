@@ -10,6 +10,7 @@ import {
 } from '@/lib/firebase/adminStorage';
 import { ACCOUNTS, MEMENTOS, MEMENTOS_CACHE } from '@/lib/firebase/collections';
 import { adminFirestore } from '@/lib/firebase/firebaseAdmin';
+import { Account } from '@/schemas/account';
 import { Image, Memento, MementoCache } from '@/schemas/memento';
 import { firestore } from 'firebase-admin';
 import { NextRequest, NextResponse } from 'next/server';
@@ -78,10 +79,10 @@ export async function PUT(req: NextRequest) {
     });
 
     const body = await req.formData();
+
     const parsedData = {
       title: body.get('title')?.toString() || '',
       bodyContent: body.get('body')?.toString() || '',
-      week: body.get('week')?.toString() || '',
       heroImageFile: (body.get('heroImage') as File) || undefined,
     };
 
@@ -132,6 +133,23 @@ export async function PUT(req: NextRequest) {
         resizeImage(fileBuffer, 50, 50),
       ]);
 
+      const newImagesTotalSize =
+        heroImageFile.size + thumbnailBuffer.length + dotBuffer.length;
+
+      const accountRef = adminFirestore.collection(ACCOUNTS).doc(user.uid);
+      const account = (await accountRef.get()).data() as Account;
+
+      if (
+        newImagesTotalSize > memento.heroImage.size &&
+        newImagesTotalSize + account.storageUsage.bytesUsed >
+          account.storageUsage.maxUsage
+      ) {
+        return NextResponse.json(
+          { message: 'Storage limit reached' },
+          { status: 400 }
+        );
+      }
+
       await Promise.all([
         deleteFileFromGCS(
           memento.heroImage.dotUrl.replace(
@@ -168,9 +186,6 @@ export async function PUT(req: NextRequest) {
         ),
       ]);
 
-      const totalSize =
-        heroImageFile.size + thumbnailBuffer.length + dotBuffer.length;
-
       const newMementoCache: MementoCache = {
         [memento.week]: {
           title,
@@ -183,7 +198,7 @@ export async function PUT(req: NextRequest) {
         dotUrl,
         thumbnailUrl,
         url: heroImageUrl,
-        size: totalSize,
+        size: newImagesTotalSize,
       };
 
       newMemento = {
@@ -195,13 +210,11 @@ export async function PUT(req: NextRequest) {
         .collection(MEMENTOS_CACHE)
         .doc(user.uid);
 
-      const accountRef = adminFirestore.collection(ACCOUNTS).doc(user.uid);
-
       await Promise.all([
         mementoCacheRef.set(newMementoCache, { merge: true }),
         accountRef.update({
           'storageUsage.bytesUsed': firestore.FieldValue.increment(
-            totalSize - memento.heroImage.size
+            newImagesTotalSize - memento.heroImage.size
           ),
         }),
       ]);

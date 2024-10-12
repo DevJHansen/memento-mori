@@ -1,8 +1,9 @@
-import { ACCOUNTS } from '@/lib/firebase/collections';
+import { ACCOUNTS, MEMENTOS, MEMENTOS_CACHE } from '@/lib/firebase/collections';
 import { NextRequest, NextResponse } from 'next/server';
-import { adminFirestore } from '@/lib/firebase/firebaseAdmin';
+import { adminAuth, adminFirestore } from '@/lib/firebase/firebaseAdmin';
 import { getUserFromToken } from '@/lib/firebase/adminAuth';
 import { Account, NewAccountSchema } from '@/schemas/account';
+import { deleteFileFromGCS, deleteFolder } from '@/lib/firebase/adminStorage';
 
 export async function GET(req: NextRequest) {
   const user = await getUserFromToken(req);
@@ -61,6 +62,13 @@ export async function POST(req: NextRequest) {
 
     const now = new Date();
 
+    if (now.getTime() < newAccountData.dob.unix) {
+      return NextResponse.json(
+        { message: 'Invalid birth day' },
+        { status: 400 }
+      );
+    }
+
     const newAccount: Account = {
       firstName: newAccountData.firstName,
       surname: newAccountData.surname,
@@ -85,6 +93,73 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(newAccount, { status: 201 });
   } catch (error) {
     console.error('Error creating account:', error);
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const user = await getUserFromToken(req);
+
+  if (user === null) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const docRef = adminFirestore.collection(ACCOUNTS).doc(user.uid);
+    const doc = await docRef.get();
+
+    if (!doc.exists) {
+      return NextResponse.json(
+        { message: 'Account not found' },
+        { status: 404 }
+      );
+    }
+
+    await adminAuth.deleteUser(user.uid);
+
+    await Promise.all([
+      await deleteFolder(user.uid),
+      await adminFirestore.collection(MEMENTOS_CACHE).doc(user.uid).delete(),
+      await adminFirestore.collection(ACCOUNTS).doc(user.uid).delete(),
+    ]);
+
+    const mementosRef = adminFirestore.collection(MEMENTOS);
+    const batchSize = 500;
+    let lastDoc = null;
+
+    while (true) {
+      let query = mementosRef.where('userId', '==', user.uid).limit(batchSize);
+
+      if (lastDoc) {
+        query = query.startAfter(lastDoc);
+      }
+
+      const snapshot = await query.get();
+
+      if (snapshot.empty) {
+        console.log('No more matching documents to delete.');
+        break;
+      }
+
+      const batch = adminFirestore.batch();
+
+      snapshot.docs.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+
+      await batch.commit();
+
+      lastDoc = snapshot.docs[snapshot.docs.length - 1];
+
+      console.log(`Batch of ${snapshot.size} documents deleted.`);
+    }
+
+    return NextResponse.json({}, { status: 200 });
+  } catch (error) {
+    console.error('Error deleting account:', error);
     return NextResponse.json(
       { message: 'Internal Server Error' },
       { status: 500 }

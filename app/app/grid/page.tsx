@@ -1,11 +1,204 @@
 'use client';
 
-import Grid from './Grid';
+import { atom, useRecoilState } from 'recoil';
+import { accountState } from '@/components/ProtectedRoute';
+import { useEffect, useRef, useState } from 'react';
+import { MdCheck, MdLocationPin } from 'react-icons/md';
+import AddMementoModal, { addMementoState } from './AddMementoModal';
+import { MementoCache } from '@/schemas/memento';
+import { LoadingState } from '@/schemas/loading';
+import { Loading } from '@/components/Loading';
+import { DotImage } from './DotImage';
+import { format } from 'date-fns';
+import { getMementoCache } from '@/lib/api/momento';
+import { FormFieldLabel } from '@/components/FormFieldLabel';
+import { getWeeksLived, LIFE_EXPECTANCY_WEEKS } from '@/utils/lifeUtils';
+import Tooltip from '@/components/Tooltip';
 
-export default function AppPage() {
+const getDotDate = (timestamp: number, week: number) => {
+  return format(new Date(timestamp + 604800000 * week), 'MMM dd, yyyy');
+};
+
+interface MementoCacheState {
+  status: LoadingState;
+  cache: null | MementoCache;
+}
+
+export const mementoCacheState = atom<MementoCacheState>({
+  key: 'mementoCacheState',
+  default: {
+    status: 'initial',
+    cache: null,
+  },
+});
+
+export default function Grid() {
+  const [account] = useRecoilState(accountState);
+  const [weeksLived, setWeeksLived] = useState<number | null>(null);
+  const currentWeekRef = useRef<HTMLDivElement | null>(null);
+  const [, createMemento] = useRecoilState(addMementoState);
+  const [cache, setCache] = useRecoilState(mementoCacheState);
+  const [scale, setScale] = useState(1);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const getCache = async () => {
+      if (cache.status === 'loading') {
+        return;
+      }
+
+      setCache({
+        status: 'loading',
+        cache: null,
+      });
+
+      try {
+        const res = await getMementoCache();
+
+        setCache({
+          status: 'success',
+          cache: res,
+        });
+      } catch (error) {
+        console.error(error);
+        setCache({
+          status: 'error',
+          cache: null,
+        });
+      }
+    };
+
+    if (cache.status === 'initial' && account.account !== null) {
+      getCache();
+    }
+  }, [account.account, cache.status, setCache]);
+
+  useEffect(() => {
+    if (account.account?.dob) {
+      const weeks = getWeeksLived(account.account?.dob.unix);
+      setWeeksLived(weeks);
+    }
+  }, [account]);
+
+  useEffect(() => {
+    if (currentWeekRef.current) {
+      currentWeekRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center',
+      });
+    }
+  }, [weeksLived]);
+
+  if (!account || weeksLived === null) {
+    return null;
+  }
+
+  const lifeGrid = [];
+  for (let i = 0; i < LIFE_EXPECTANCY_WEEKS; i++) {
+    const isLived = i < weeksLived;
+    const isCurrentWeek = i === weeksLived;
+
+    const decade = Math.floor(i / 520) * 10;
+    const displayDecade = decade + 1;
+    const endDecade = decade + 10 > 70 ? 75 : decade + 10;
+
+    if (i > 0 && i % 520 === 0) {
+      lifeGrid.push(
+        <div key={`spacer-${i}`} className="w-full">
+          <h3 className="my-4 text-xs">{`${displayDecade} - ${endDecade}`}</h3>
+        </div>
+      );
+    }
+
+    lifeGrid.push(
+      <Tooltip
+        text={`${getDotDate(account!.account!.dob.unix, i)}`}
+        key={`week-${i}`}
+        parentRef={gridRef}
+      >
+        <div
+          ref={isCurrentWeek ? currentWeekRef : null}
+          className={`p-[1px] cursor-pointer hover:bg-secondary z-0 rounded-full flex items-center justify-center m-1 ${
+            isLived
+              ? 'bg-accent text-background'
+              : 'bg-foreground hover:text-secondary'
+          } ${
+            isCurrentWeek &&
+            'text-secondary hover:text-foreground hover:bg-secondary'
+          }`}
+          onClick={() => {
+            if (isLived || isCurrentWeek) {
+              createMemento({
+                isOpen: true,
+                week: i.toString(),
+                title:
+                  cache.cache !== null && cache.cache[i]
+                    ? cache.cache[i].title
+                    : '',
+                mementoId:
+                  cache.cache !== null && cache.cache[i]
+                    ? cache.cache[i].mementoId
+                    : '',
+                mementoDate: getDotDate(account!.account!.dob.unix, i),
+              });
+            }
+          }}
+        >
+          {cache.cache !== null && cache.cache[i] && (
+            <DotImage
+              url={cache.cache[i].heroImage}
+              alt={`week-icon`}
+              scale={scale}
+            />
+          )}
+          {isCurrentWeek && !(cache.cache && cache.cache[i]) && (
+            <MdLocationPin
+              size={scale}
+              className={`${isLived ? '' : ' text-inherit font-extrabold'}`}
+            />
+          )}
+          {!isCurrentWeek && !(cache.cache && cache.cache[i]) && (
+            <MdCheck
+              size={scale}
+              className={`${isLived ? '' : ' text-inherit font-extrabold'}`}
+            />
+          )}
+        </div>
+      </Tooltip>
+    );
+  }
+
+  if (cache.status === 'initial' || cache.status === 'loading') {
+    return (
+      <div className="flex h-[calc(100vh_-_12rem)] justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
-    <div className="lg:px-32 md:px-24 px-12 mt-24 mb-6">
-      <Grid />
-    </div>
+    <>
+      <AddMementoModal />
+      <div className="mb-4">
+        <FormFieldLabel label="Icon Size" id="slider" />
+        <input
+          type="range"
+          min="1"
+          max="48"
+          step="1"
+          value={scale}
+          onChange={(e) => setScale(Number(e.target.value))}
+          className="w-48"
+        />
+      </div>
+      <div
+        className="max-h-[calc(100vh_-_12rem)] overflow-y-auto pb-8"
+        ref={gridRef}
+      >
+        <h3 className="mb-4 text-xs">0 - 10</h3>
+        <div className="flex flex-wrap">{lifeGrid}</div>
+      </div>
+    </>
   );
 }
