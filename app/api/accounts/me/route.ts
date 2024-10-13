@@ -5,6 +5,8 @@ import { getUserFromToken } from '@/lib/firebase/adminAuth';
 import { Account, NewAccountSchema } from '@/schemas/account';
 import { deleteFolder } from '@/lib/firebase/adminStorage';
 
+const DEFAULT_STORAGE_LIMIT = 2147483648; // 2 GB
+
 export async function GET(req: NextRequest) {
   const user = await getUserFromToken(req);
 
@@ -84,7 +86,7 @@ export async function POST(req: NextRequest) {
       uid: user.uid,
       storageUsage: {
         bytesUsed: 0,
-        maxUsage: 5368709120, // 5GB in bytes
+        maxUsage: DEFAULT_STORAGE_LIMIT,
       },
     };
 

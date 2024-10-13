@@ -7,7 +7,6 @@ import { Button } from '@/components/Button';
 import { FormInput } from '@/components/FormInput';
 import { FormFieldLabel } from '@/components/FormFieldLabel';
 import { getAuthToken } from '@/lib/firebase/auth';
-import { mementoCacheState } from './page';
 import { Memento } from '@/schemas/memento';
 import { LoadingState } from '@/schemas/loading';
 import ImageUploader from '@/components/ImageUploader';
@@ -19,6 +18,7 @@ import {
   DEFAULT_MAX_IMAGE_SIZE,
   DEFAULT_MAX_IMAGE_SIZE_TEXT,
 } from '@/constants/maxFileSize';
+import { mementoCacheState } from './recoil';
 
 export const addMementoState = atom<{
   isOpen: boolean;

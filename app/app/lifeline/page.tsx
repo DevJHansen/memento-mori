@@ -1,12 +1,10 @@
 'use client';
 
-import { atom, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { accountState } from '@/components/ProtectedRoute';
 import { useEffect, useRef, useState } from 'react';
 import { MdCheck, MdLocationPin } from 'react-icons/md';
 import AddMementoModal, { addMementoState } from './AddMementoModal';
-import { MementoCache } from '@/schemas/memento';
-import { LoadingState } from '@/schemas/loading';
 import { Loading } from '@/components/Loading';
 import { DotImage } from './DotImage';
 import { getMementoCache } from '@/lib/api/momento';
@@ -17,19 +15,7 @@ import {
   LIFE_EXPECTANCY_WEEKS,
 } from '@/utils/lifeUtils';
 import Tooltip from '@/components/Tooltip';
-
-interface MementoCacheState {
-  status: LoadingState;
-  cache: null | MementoCache;
-}
-
-export const mementoCacheState = atom<MementoCacheState>({
-  key: 'mementoCacheState',
-  default: {
-    status: 'initial',
-    cache: null,
-  },
-});
+import { mementoCacheState } from './recoil';
 
 export default function Grid() {
   const [account] = useRecoilState(accountState);

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { fetchImage } from '@/lib/firebase/storage';
@@ -67,7 +68,7 @@ export default function MementoCard({ memento, account }: Props) {
         memento.heroImage && (
           <img
             src={image}
-            alt={``}
+            alt={`memento hero image`}
             className="w-full h-48 object-cover rounded-t-lg"
           />
         )
