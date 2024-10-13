@@ -4,13 +4,22 @@ import { fetchImage } from '@/lib/firebase/storage';
 import { Memento } from '@/schemas/memento';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
+import DOMPurify from 'dompurify';
+import { EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
+import { Account } from '@/schemas/account';
+import { getDateFromWeek } from '@/utils/lifeUtils';
 
 interface Props {
   memento: Memento;
+  account: Account;
 }
 
-export default function MementoCard({ memento }: Props) {
+export default function MementoCard({ memento, account }: Props) {
   const [image, setImage] = useState('');
+
+  const sanitizedHtml = DOMPurify.sanitize(memento.body);
 
   useEffect(() => {
     const getImage = async () => {
@@ -33,13 +42,28 @@ export default function MementoCard({ memento }: Props) {
     getImage();
   }, []);
 
+  const editor = useEditor({
+    extensions: [StarterKit, Underline],
+    content: sanitizedHtml,
+    editorProps: {
+      attributes: {
+        class: 'editor',
+      },
+    },
+    immediatelyRender: false,
+    editable: false,
+  });
+
+  if (!editor) {
+    return null;
+  }
   return (
     <div
       key={memento.uid}
       className="mb-4 p-4 bg-background shadow-md rounded-lg"
     >
       {!image ? (
-        <div className="animate-pulse h-48 bg-gray-300 rounded-t-lg"></div>
+        <div className="animate-pulse h-48 bg-gray-400 rounded-t-lg"></div>
       ) : (
         memento.heroImage && (
           <img
@@ -50,9 +74,12 @@ export default function MementoCard({ memento }: Props) {
         )
       )}
       <h2 className="text-xl font-semibold mt-2">{memento.title}</h2>
-      <p className="text-gray-700">{memento.body}</p>
-      <p className="text-gray-500 text-sm mt-1">
-        Created at: {format(memento.createdAt.unix * 1000, 'MMM dd, yyyy')}
+
+      <div className="editor-container">
+        <EditorContent editor={editor} />
+      </div>
+      <p className="text-gray-500 text-sm mt-2">
+        {getDateFromWeek(account.dob.unix, memento.week)}
       </p>
     </div>
   );

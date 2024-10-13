@@ -30,21 +30,21 @@ export default function AuthNavbar() {
                 </Link>
                 <Link
                   className="text-white  px-3 py-2 rounded-md text-sm font-medium"
-                  href="/app/grid"
+                  href="/app/lifeline"
                 >
-                  Grid
+                  Lifeline
+                </Link>
+                <Link
+                  className="text-white  px-3 py-2 rounded-md text-sm font-medium"
+                  href="/app/mementos"
+                >
+                  Mementos
                 </Link>
                 <Link
                   className="text-white  px-3 py-2 rounded-md text-sm font-medium"
                   href="/app/account"
                 >
                   Account
-                </Link>
-                <Link
-                  className="text-white  px-3 py-2 rounded-md text-sm font-medium"
-                  href="/app/timeline"
-                >
-                  Timeline
                 </Link>
                 <button
                   className="text-white  px-3 py-2 rounded-md text-sm font-medium"
@@ -82,21 +82,21 @@ export default function AuthNavbar() {
           </Link>
           <Link
             className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
-            href="/app/grid"
+            href="/app/lifeline"
           >
-            Grid
+            Lifeline
+          </Link>
+          <Link
+            className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
+            href="/app/mementos"
+          >
+            Mementos
           </Link>
           <Link
             className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
             href="/app/account"
           >
             Account
-          </Link>
-          <Link
-            className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
-            href="/app/timeline"
-          >
-            Timeline
           </Link>
           <button
             className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"

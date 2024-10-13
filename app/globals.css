@@ -56,6 +56,27 @@ body {
   margin-left: 20px;
 }
 
+.rich-text p {
+  margin: 10px 0;
+}
+
+.rich-text ul {
+  list-style-type: disc;
+  margin: 10px 0;
+  margin-left: 20px;
+}
+
+.rich-text ol {
+  list-style-type: decimal;
+  margin: 0;
+  margin-left: 20px;
+}
+
+.rich-text h1,
+h2 {
+  font-weight: bold;
+}
+
 .is-active {
   color: var(--accent);
 }

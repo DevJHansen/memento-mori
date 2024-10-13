@@ -12,12 +12,12 @@ import { DotImage } from './DotImage';
 import { format } from 'date-fns';
 import { getMementoCache } from '@/lib/api/momento';
 import { FormFieldLabel } from '@/components/FormFieldLabel';
-import { getWeeksLived, LIFE_EXPECTANCY_WEEKS } from '@/utils/lifeUtils';
+import {
+  getDateFromWeek,
+  getWeeksLived,
+  LIFE_EXPECTANCY_WEEKS,
+} from '@/utils/lifeUtils';
 import Tooltip from '@/components/Tooltip';
-
-const getDotDate = (timestamp: number, week: number) => {
-  return format(new Date(timestamp + 604800000 * week), 'MMM dd, yyyy');
-};
 
 interface MementoCacheState {
   status: LoadingState;
@@ -38,7 +38,7 @@ export default function Grid() {
   const currentWeekRef = useRef<HTMLDivElement | null>(null);
   const [, createMemento] = useRecoilState(addMementoState);
   const [cache, setCache] = useRecoilState(mementoCacheState);
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(8);
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function Grid() {
 
     lifeGrid.push(
       <Tooltip
-        text={`${getDotDate(account!.account!.dob.unix, i)}`}
+        text={`${getDateFromWeek(account!.account!.dob.unix, i)}`}
         key={`week-${i}`}
         parentRef={gridRef}
       >
@@ -140,7 +140,7 @@ export default function Grid() {
                   cache.cache !== null && cache.cache[i]
                     ? cache.cache[i].mementoId
                     : '',
-                mementoDate: getDotDate(account!.account!.dob.unix, i),
+                mementoDate: getDateFromWeek(account!.account!.dob.unix, i),
               });
             }
           }}
@@ -181,6 +181,16 @@ export default function Grid() {
     <>
       <AddMementoModal />
       <div className="mb-4">
+        <div className="mb-6">
+          <h2 className="text-2xl">{account.account!.firstName}'s Lifeline.</h2>
+          <p className="py-2 text-xs text-gray-400">
+            Life is a collection of moments. The lifeline divides an average
+            lifespan of 75 years into weekly circles. Click on a circle to add a
+            memento—images and text that capture your experiences. As you fill
+            in each week, you "colour in" your life grid, creating a vivid
+            tapestry of your journey.
+          </p>
+        </div>
         <FormFieldLabel label="Icon Size" id="slider" />
         <input
           type="range"

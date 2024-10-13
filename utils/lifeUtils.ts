@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 const LIFE_EXPECTANCY_YEARS = 75;
 const WEEKS_IN_YEAR = 52.1775;
 export const LIFE_EXPECTANCY_WEEKS = LIFE_EXPECTANCY_YEARS * WEEKS_IN_YEAR;
@@ -16,4 +18,8 @@ export const getWeeksLived = (birthTimestamp: number): number => {
   const diffInMilliseconds = currentDate.getTime() - birthDate.getTime();
   const weeksLived = diffInMilliseconds / (1000 * 60 * 60 * 24 * 7);
   return Math.floor(weeksLived);
+};
+
+export const getDateFromWeek = (dobUnix: number, week: number) => {
+  return format(new Date(dobUnix + 604800000 * week), 'MMM dd, yyyy');
 };
