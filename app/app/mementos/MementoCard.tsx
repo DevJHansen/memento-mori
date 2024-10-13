@@ -2,7 +2,6 @@
 
 import { fetchImage } from '@/lib/firebase/storage';
 import { Memento } from '@/schemas/memento';
-import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import DOMPurify from 'dompurify';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -40,7 +39,7 @@ export default function MementoCard({ memento, account }: Props) {
     };
 
     getImage();
-  }, []);
+  }, [image, memento.heroImage.url]);
 
   const editor = useEditor({
     extensions: [StarterKit, Underline],

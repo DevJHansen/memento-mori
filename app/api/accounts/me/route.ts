@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminFirestore } from '@/lib/firebase/firebaseAdmin';
 import { getUserFromToken } from '@/lib/firebase/adminAuth';
 import { Account, NewAccountSchema } from '@/schemas/account';
-import { deleteFileFromGCS, deleteFolder } from '@/lib/firebase/adminStorage';
+import { deleteFolder } from '@/lib/firebase/adminStorage';
 
 export async function GET(req: NextRequest) {
   const user = await getUserFromToken(req);

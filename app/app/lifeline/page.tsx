@@ -9,7 +9,6 @@ import { MementoCache } from '@/schemas/memento';
 import { LoadingState } from '@/schemas/loading';
 import { Loading } from '@/components/Loading';
 import { DotImage } from './DotImage';
-import { format } from 'date-fns';
 import { getMementoCache } from '@/lib/api/momento';
 import { FormFieldLabel } from '@/components/FormFieldLabel';
 import {
@@ -182,13 +181,15 @@ export default function Grid() {
       <AddMementoModal />
       <div className="mb-4">
         <div className="mb-6">
-          <h2 className="text-2xl">{account.account!.firstName}'s Lifeline.</h2>
+          <h2 className="text-2xl">
+            {account.account!.firstName}&apos;s Lifeline.
+          </h2>
           <p className="py-2 text-xs text-gray-400">
             Life is a collection of moments. The lifeline divides an average
             lifespan of 75 years into weekly circles. Click on a circle to add a
             memento—images and text that capture your experiences. As you fill
-            in each week, you "colour in" your life grid, creating a vivid
-            tapestry of your journey.
+            in each week, you &quot;colour in&quot; your life grid, creating a
+            vivid tapestry of your journey.
           </p>
         </div>
         <FormFieldLabel label="Icon Size" id="slider" />

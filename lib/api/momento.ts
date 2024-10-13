@@ -43,7 +43,7 @@ export const getMementos = async (page: number): Promise<GetMementosResult> => {
       throw new Error('Unable to retrieve authentication token.');
     }
 
-    const res = await fetch('/api/mementos', {
+    const res = await fetch(`/api/mementos?page=${page}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

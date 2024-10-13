@@ -2,10 +2,7 @@
 
 import { Loading } from '@/components/Loading';
 import { getMementos, GetMementosResult } from '@/lib/api/momento';
-import { fetchImage } from '@/lib/firebase/storage';
 import { LoadingState } from '@/schemas/loading';
-import { Memento } from '@/schemas/memento';
-import { format } from 'date-fns';
 import { useEffect } from 'react';
 import { atom, useRecoilState } from 'recoil';
 import MementoCard from './MementoCard';
@@ -56,7 +53,7 @@ export default function Timeline() {
     };
 
     handleGetMementos();
-  }, []);
+  }, [mementos.results?.results.length, mementos.status, setMementos]);
 
   return (
     <div className="w-full flex items-center justify-center">
