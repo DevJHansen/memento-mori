@@ -7,7 +7,6 @@ import AddMementoModal, { addMementoState } from './AddMementoModal';
 import { Loading } from '@/components/Loading';
 import { DotImage } from './DotImage';
 import { getMementoCache } from '@/lib/api/momento';
-import { FormFieldLabel } from '@/components/FormFieldLabel';
 import {
   getDateFromWeek,
   getWeeksLived,
@@ -15,6 +14,7 @@ import {
 } from '@/utils/lifeUtils';
 import Tooltip from '@/components/Tooltip';
 import { mementoCacheState } from './recoil';
+import ScaleControl from './ScaleControl';
 
 export default function Grid() {
   const [account] = useRecoilState(accountState);
@@ -147,7 +147,7 @@ export default function Grid() {
 
   if (cache.status === 'initial' || cache.status === 'loading') {
     return (
-      <div className="flex h-[calc(100vh_-_12rem)] justify-center items-center">
+      <div className="flex justify-center items-center">
         <Loading />
       </div>
     );
@@ -169,16 +169,7 @@ export default function Grid() {
             vivid tapestry of your journey.
           </p>
         </div>
-        <FormFieldLabel label="Icon Size" id="slider" />
-        <input
-          type="range"
-          min="1"
-          max="48"
-          step="1"
-          value={scale}
-          onChange={(e) => setScale(Number(e.target.value))}
-          className="w-48"
-        />
+        <ScaleControl scale={scale} setScale={setScale} />
       </div>
       <div className="pb-8" ref={gridRef}>
         <h3 className="mb-4 text-xs">0 - 10</h3>

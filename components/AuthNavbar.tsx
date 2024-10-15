@@ -77,24 +77,28 @@ export default function AuthNavbar() {
           <Link
             className="hover:text-accent block px-3 py-2 rounded-md text-base font-medium text-right w-full"
             href="/app"
+            onClick={() => setIsOpen(false)}
           >
             Home
           </Link>
           <Link
             className="hover:text-accent block px-3 py-2 rounded-md text-base font-medium text-right w-full"
             href="/app/lifeline"
+            onClick={() => setIsOpen(false)}
           >
             Lifeline
           </Link>
           <Link
             className="hover:text-accent block px-3 py-2 rounded-md text-base font-medium text-right w-full"
             href="/app/mementos"
+            onClick={() => setIsOpen(false)}
           >
             Mementos
           </Link>
           <Link
             className="hover:text-accent block px-3 py-2 rounded-md text-base font-medium text-right w-full"
             href="/app/account"
+            onClick={() => setIsOpen(false)}
           >
             Account
           </Link>

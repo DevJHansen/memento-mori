@@ -87,7 +87,7 @@ export default function ProtectedRoute({ children }: Props) {
 
   if (loading) {
     return (
-      <div className="flex h-screen justify-center items-center">
+      <div className="flex justify-center items-center">
         <Loading />
       </div>
     );
@@ -99,7 +99,7 @@ export default function ProtectedRoute({ children }: Props) {
   }
 
   if (account.status === 'initial' || account.status === 'loading') {
-    <div className="flex h-screen justify-center items-center">
+    <div className="flex justify-center items-center">
       <Loading />
     </div>;
   }
@@ -113,7 +113,7 @@ export default function ProtectedRoute({ children }: Props) {
   }
 
   return (
-    <div className="flex h-screen justify-center items-center">
+    <div className="flex justify-center items-center">
       <Loading />
     </div>
   );

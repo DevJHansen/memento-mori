@@ -6,6 +6,7 @@ import { Memento } from '@/schemas/memento';
 import { useEffect, useState } from 'react';
 import { Account } from '@/schemas/account';
 import { getDateFromWeek } from '@/utils/lifeUtils';
+import { MdAdd } from 'react-icons/md';
 
 interface Props {
   memento: Memento;
@@ -56,6 +57,9 @@ export default function MementoCard({ memento, account }: Props) {
         <p className="text-textOnDark text-sm">
           {getDateFromWeek(account.dob.unix, memento.week)}
         </p>
+      </div>
+      <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 hover:opacity-50 cursor-pointer">
+        <MdAdd className="text-foreground" size={48} />
       </div>
     </div>
   );

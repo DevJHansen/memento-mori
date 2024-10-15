@@ -82,6 +82,7 @@ export default function Navbar() {
             <Link
               className="text-foreground hover:text-accent  block px-3 py-2 rounded-md text-base font-medium"
               href="/app"
+              onClick={() => setIsOpen(false)}
             >
               Home
             </Link>

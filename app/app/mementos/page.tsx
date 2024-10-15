@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 import { atom, useRecoilState } from 'recoil';
 import MementoCard from './MementoCard';
 import { accountState } from '@/components/ProtectedRoute';
+import { MdPhotoLibrary } from 'react-icons/md';
+import SearchComponent from '@/components/FloatingSearch';
 
 interface MementoState {
   status: LoadingState;
@@ -55,41 +57,57 @@ export default function Timeline() {
     handleGetMementos();
   }, [mementos.results?.hits.hits.length, mementos.status, setMementos]);
 
+  if (mementos.status === 'loading') {
+    return (
+      <div className="flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
+
+  if (mementos.status === 'error') {
+    return (
+      <div className="text-center text-accent">
+        <p>
+          An error occurred while fetching mementos. Please try again later.
+        </p>
+      </div>
+    );
+  }
+
+  if (
+    mementos.status === 'success' &&
+    mementos.results?.hits.hits.length === 0
+  ) {
+    return (
+      <div className="text-foreground flex flex-col items-center space-y-4">
+        <MdPhotoLibrary size={48} className="text-accent" />
+        <h1 className="font-bold text-2xl">No mementos found.</h1>
+        <p className="text-sm">
+          You haven&apos;t added any momentos yet. Go to your life to get
+          started.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-      {mementos.status === 'loading' && (
-        <div className="flex items-center justify-center h-full">
-          <Loading />
-        </div>
-      )}
-
-      {mementos.status === 'success' &&
-        mementos.results!.hits.hits.length > 0 && (
-          <>
-            {mementos.results!.hits.hits.map((memento) => (
-              <MementoCard
-                memento={memento}
-                key={memento.uid}
-                account={account.account!}
-              />
-            ))}
-          </>
-        )}
-
-      {mementos.status === 'success' &&
-        mementos.results?.hits.hits.length === 0 && (
-          <div className="text-foreground">
-            <p>No mementos found.</p>
-          </div>
-        )}
-
-      {mementos.status === 'error' && (
-        <div className="text-red-600 mb-4">
-          <p>
-            An error occurred while fetching mementos. Please try again later.
-          </p>
-        </div>
-      )}
+    <div>
+      <SearchComponent />
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+        {mementos.status === 'success' &&
+          mementos.results!.hits.hits.length > 0 && (
+            <>
+              {mementos.results!.hits.hits.map((memento) => (
+                <MementoCard
+                  memento={memento}
+                  key={memento.uid}
+                  account={account.account!}
+                />
+              ))}
+            </>
+          )}
+      </div>
     </div>
   );
 }
