@@ -160,7 +160,7 @@ export default function CompleteSignUp() {
           loading={loading}
         />
         {error && (
-          <p className="text-primary text-center">
+          <p className="text-accent text-center">
             Error creating account. Please try again.
           </p>
         )}

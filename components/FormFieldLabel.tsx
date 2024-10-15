@@ -15,11 +15,11 @@ export const FormFieldLabel = ({
 }: Props) => (
   <label
     className={`block ${
-      error ? 'text-accent italic' : 'text-gray-400'
+      error ? 'text-accent italic' : 'text-foreground'
     } text-sm font-bold mb-4 ${labelStyle}`}
     htmlFor={id}
   >
     {label}
-    {required && label && <span className="ml-2 text-secondary">*</span>}
+    {required && label && <span className="ml-2 text-accent">*</span>}
   </label>
 );

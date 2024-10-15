@@ -53,7 +53,7 @@ export default function DeleteAccount() {
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <div className="p-6">
         <h2 className="text-xl font-semibold mb-4">Delete Account</h2>
-        <p className="text-gray-500 mb-6">
+        <p className="text-foreground mb-6">
           Are you sure you want to delete your account? This action cannot be
           undone.
         </p>

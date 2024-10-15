@@ -43,10 +43,10 @@ const Tooltip: React.FC<TooltipProps> = ({ text, parentRef, children }) => {
       {showTooltip && (
         <div
           ref={tooltipRef}
-          className={`bg-black absolute 
+          className={`bg-backgroundSecondary absolute 
             ${position.top ? 'bottom-full mb-2' : 'top-full mt-2'} 
             ${position.left ? 'right-0' : 'left-0'} 
-            w-max text-white text-center text-sm px-3 py-1 rounded shadow-lg z-50`}
+            w-max text-foreground text-center text-sm px-3 py-1 rounded shadow-lg z-50`}
         >
           {text}
         </div>

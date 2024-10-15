@@ -25,20 +25,20 @@ export default function Home() {
               How Much Time Do You Have Left?
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="flex flex-col items-center bg-backgroundLight text-accent p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+              <div className="flex flex-col items-center bg-backgroundSecondary text-accent p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
                 <h3 className="text-4xl font-semibold mb-2">75 Years</h3>
                 <p className="text-foreground text-center">
                   The average life expectancy is 75 years. How will you spend
                   yours?
                 </p>
               </div>
-              <div className="flex flex-col items-center bg-backgroundLight text-accent p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+              <div className="flex flex-col items-center bg-backgroundSecondary text-accent p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
                 <h3 className="text-4xl font-semibold mb-2">3900 Weeks</h3>
                 <p className="text-foreground text-center">
                   That’s 3,900 weeks of life. Track each one and make it count.
                 </p>
               </div>
-              <div className="flex flex-col items-center bg-backgroundLight text-accent p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
+              <div className="flex flex-col items-center bg-backgroundSecondary text-accent p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
                 <h3 className="text-4xl font-semibold mb-2">
                   Live Intentionally
                 </h3>

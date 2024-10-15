@@ -225,7 +225,7 @@ export default function AddMementoModal() {
                   selectedImage={heroImageFile}
                   handleFileChange={handleFileChange}
                 />
-                <div>
+                <div className="mt-4">
                   {submittingState === 'error' && (
                     <AlertBox
                       severity="error"
@@ -257,7 +257,7 @@ export default function AddMementoModal() {
                       </p>
                     </div>
                   ) : (
-                    <div className="text-sm mt-2 text-gray-500">
+                    <div className="text-sm mt-2 text-foreground">
                       Total File Size: {(totalSize / (1024 * 1024)).toFixed(2)}{' '}
                       MB
                     </div>

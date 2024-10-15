@@ -6,15 +6,16 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'selector',
   theme: {
     extend: {
       colors: {
         background: 'var(--background)',
-        backgroundLight: 'var(--backgroundLight)',
+        backgroundSecondary: 'var(--backgroundSecondary)',
         foreground: 'var(--foreground)',
-        primary: 'var(--primary)',
-        secondary: 'var(--secondary)',
         accent: 'var(--accent)',
+        accentSecondary: 'var(--accentSecondary)',
+        textOnDark: 'var(--textOnDark)',
       },
     },
   },

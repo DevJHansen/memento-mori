@@ -27,7 +27,7 @@ export default function Timeline() {
 
   useEffect(() => {
     const handleGetMementos = async () => {
-      if (mementos.status !== 'initial' || mementos.results?.results.length) {
+      if (mementos.status !== 'initial' || mementos.results?.hits.hits.length) {
         return;
       }
 
@@ -37,7 +37,7 @@ export default function Timeline() {
       });
 
       try {
-        const res = await getMementos(1);
+        const res = await getMementos(0);
 
         setMementos({
           status: 'success',
@@ -53,47 +53,43 @@ export default function Timeline() {
     };
 
     handleGetMementos();
-  }, [mementos.results?.results.length, mementos.status, setMementos]);
+  }, [mementos.results?.hits.hits.length, mementos.status, setMementos]);
 
   return (
-    <div className="w-full flex items-center justify-center">
-      <div className="p-4 bg-backgroundLight max-w-xl rounded-lg">
-        <h1 className="text-2xl font-bold mb-4">Memento Timeline</h1>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+      {mementos.status === 'loading' && (
+        <div className="flex items-center justify-center h-full">
+          <Loading />
+        </div>
+      )}
 
-        {mementos.status === 'loading' && (
-          <div className="flex items-center justify-center h-full">
-            <Loading />
+      {mementos.status === 'success' &&
+        mementos.results!.hits.hits.length > 0 && (
+          <>
+            {mementos.results!.hits.hits.map((memento) => (
+              <MementoCard
+                memento={memento}
+                key={memento.uid}
+                account={account.account!}
+              />
+            ))}
+          </>
+        )}
+
+      {mementos.status === 'success' &&
+        mementos.results?.hits.hits.length === 0 && (
+          <div className="text-foreground">
+            <p>No mementos found.</p>
           </div>
         )}
 
-        {mementos.status === 'error' && (
-          <div className="text-red-600 mb-4">
-            <p>
-              An error occurred while fetching mementos. Please try again later.
-            </p>
-          </div>
-        )}
-
-        {mementos.status === 'success' &&
-          mementos.results!.results.length > 0 && (
-            <div>
-              {mementos.results!.results.map((memento) => (
-                <MementoCard
-                  memento={memento}
-                  key={memento.uid}
-                  account={account.account!}
-                />
-              ))}
-            </div>
-          )}
-
-        {mementos.status === 'success' &&
-          mementos.results?.results.length === 0 && (
-            <div className="text-gray-600">
-              <p>No mementos found.</p>
-            </div>
-          )}
-      </div>
+      {mementos.status === 'error' && (
+        <div className="text-red-600 mb-4">
+          <p>
+            An error occurred while fetching mementos. Please try again later.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

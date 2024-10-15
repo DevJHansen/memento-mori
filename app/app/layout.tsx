@@ -13,7 +13,7 @@ export default function RootLayout({
     <RecoilRoot>
       <AuthNavbar />
       <ProtectedRoute>
-        <div className="lg:px-32 md:px-24 px-12 mt-24 mb-6">{children}</div>
+        <div className="p-4 sm:p-8 md:p-12 lg:p-16">{children}</div>
       </ProtectedRoute>
     </RecoilRoot>
   );

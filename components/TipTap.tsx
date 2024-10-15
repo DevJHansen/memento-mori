@@ -38,7 +38,7 @@ export default function TipTap({ state, setState }: Props) {
 
   return (
     <div>
-      <div className="menu-bar space-x-4 bg-backgroundLight rounded p-2 flex items-center">
+      <div className="menu-bar space-x-4 bg-backgroundSecondary rounded p-2 flex items-center">
         <label
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={editor.isActive('bold') ? 'is-active' : ''}

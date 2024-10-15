@@ -22,3 +22,7 @@ env:
     secret: measurement-id
   - variable: FIREBASE_SERVICE_ACCOUNT
     secret: firebase-service-account
+  - variable: ALGOLIA_APP_ID
+    value: DCCM7B8UWF
+  - variable: ALGOLIA_API_KEY
+    secret: firestore-algolia-search-ALGOLIA_API_KEY

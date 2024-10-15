@@ -3,7 +3,6 @@
 import { useRecoilState } from 'recoil';
 import { accountState } from '@/components/ProtectedRoute';
 import { useEffect, useRef, useState } from 'react';
-import { MdCheck, MdLocationPin } from 'react-icons/md';
 import AddMementoModal, { addMementoState } from './AddMementoModal';
 import { Loading } from '@/components/Loading';
 import { DotImage } from './DotImage';
@@ -96,6 +95,12 @@ export default function Grid() {
       );
     }
 
+    const hasMemento = cache.cache !== null && cache.cache[i];
+
+    const isLivedBg = 'bg-foreground';
+    const notIsLivedBg = 'bg-background';
+    const currentWeekBg = 'bg-accent';
+
     lifeGrid.push(
       <Tooltip
         text={`${getDateFromWeek(account!.account!.dob.unix, i)}`}
@@ -103,15 +108,13 @@ export default function Grid() {
         parentRef={gridRef}
       >
         <div
+          style={{ width: `${scale}px`, height: `${scale}px` }}
           ref={isCurrentWeek ? currentWeekRef : null}
-          className={`p-[1px] cursor-pointer hover:bg-secondary z-0 rounded-full flex items-center justify-center m-1 ${
-            isLived
-              ? 'bg-accent text-background'
-              : 'bg-foreground hover:text-secondary'
-          } ${
-            isCurrentWeek &&
-            'text-secondary hover:text-foreground hover:bg-secondary'
-          }`}
+          className={`cursor-pointer hover:bg-accentSecondary z-0 rounded-sm flex items-center justify-center m-[2px] ${
+            isLived && !isCurrentWeek && isLivedBg
+          } ${!isLived && !isCurrentWeek && notIsLivedBg} ${
+            isCurrentWeek && currentWeekBg
+          } ${hasMemento ? 'border-0' : 'border-[1px] border-foreground'}`}
           onClick={() => {
             if (isLived || isCurrentWeek) {
               createMemento({
@@ -137,18 +140,6 @@ export default function Grid() {
               scale={scale}
             />
           )}
-          {isCurrentWeek && !(cache.cache && cache.cache[i]) && (
-            <MdLocationPin
-              size={scale}
-              className={`${isLived ? '' : ' text-inherit font-extrabold'}`}
-            />
-          )}
-          {!isCurrentWeek && !(cache.cache && cache.cache[i]) && (
-            <MdCheck
-              size={scale}
-              className={`${isLived ? '' : ' text-inherit font-extrabold'}`}
-            />
-          )}
         </div>
       </Tooltip>
     );
@@ -170,7 +161,7 @@ export default function Grid() {
           <h2 className="text-2xl">
             {account.account!.firstName}&apos;s Lifeline.
           </h2>
-          <p className="py-2 text-xs text-gray-400">
+          <p className="py-2 text-xs text-foreground">
             Life is a collection of moments. The lifeline divides an average
             lifespan of 75 years into weekly circles. Click on a circle to add a
             memento—images and text that capture your experiences. As you fill
@@ -189,10 +180,7 @@ export default function Grid() {
           className="w-48"
         />
       </div>
-      <div
-        className="max-h-[calc(100vh_-_12rem)] overflow-y-auto pb-8"
-        ref={gridRef}
-      >
+      <div className="pb-8" ref={gridRef}>
         <h3 className="mb-4 text-xs">0 - 10</h3>
         <div className="flex flex-wrap">{lifeGrid}</div>
       </div>

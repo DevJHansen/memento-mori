@@ -2,23 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #011823;
-  --backgroundLight: #ffffff08;
-  --foreground: #d3edfd;
-  --primary: #80d7fa;
-  --secondary: #980656;
+/* :root {
+  --background: #ffffff;
+  --backgroundSecondary: #f2f2f2;
+  --foreground: #333333;
   --accent: #f74922;
+  --accentSecondary: #c2381b;
+  --textOnDark: #f2f2f2;
+} */
+
+:root {
+  --background: #000000;
+  --backgroundSecondary: #181c14;
+  --foreground: #ecdfcc;
+  --accent: #f74922;
+  --accentSecondary: #c2381b;
+  --textOnDark: #ecdfcc;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #011823;
-    --backgroundLight: #ffffff08;
-    --foreground: #d3edfd;
-    --primary: #80d7fa;
-    --secondary: #980656;
+    --background: #000000;
+    --backgroundSecondary: #181c14;
+    --foreground: #ecdfcc;
     --accent: #f74922;
+    --accentSecondary: #c2381b;
+    --textOnDark: #ecdfcc;
   }
 }
 
@@ -42,7 +51,7 @@ body {
   padding: 16px;
   border-radius: 4px;
   outline: none;
-  background-color: var(--backgroundLight);
+  background-color: var(--backgroundSecondary);
   color: var(--foreground);
 }
 

@@ -17,7 +17,7 @@ export default function Avatar({
 }: Props) {
   return (
     <div
-      className={`flex items-center justify-center bg-gray-200 rounded-full ${className}`}
+      className={`flex items-center justify-center bg-backgroundSecondary rounded-full ${className}`}
       style={{ width: size, height: size }}
     >
       {src ? (

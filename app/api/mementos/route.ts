@@ -12,6 +12,7 @@ import {
   DEFAULT_MAX_IMAGE_SIZE_TEXT,
 } from '@/constants/maxFileSize';
 import { Account } from '@/schemas/account';
+import { algoliaSearch } from '@/lib/algolia/algolia';
 
 export async function GET(req: NextRequest) {
   const user = await getUserFromToken(req);
@@ -22,9 +23,11 @@ export async function GET(req: NextRequest) {
 
   try {
     const { searchParams } = new URL(req.url);
-    const limit = 10;
-    let page = 1;
+
+    let page = 0;
+
     const pageParam = searchParams.get('page');
+    const searchText = searchParams.get('search') ?? '';
 
     if (pageParam && parseInt(pageParam)) {
       if (parseInt(pageParam) < 1) {
@@ -33,29 +36,16 @@ export async function GET(req: NextRequest) {
       page = parseInt(pageParam);
     }
 
-    const offsetMultiplier = page - 1;
-    const mementosRef = adminFirestore
-      .collection(MEMENTOS)
-      .where('userId', '==', user.uid);
-
-    const [totalMementos, getMementos] = await Promise.all([
-      (await mementosRef.count().get()).data().count,
-      await mementosRef
-        .orderBy('week', 'desc')
-        .offset(offsetMultiplier * limit)
-        .limit(limit)
-        .get(),
-    ]);
-
-    const totalPages = Math.ceil(totalMementos / limit);
-    const docs = getMementos.docs.map((doc) => doc.data());
-
-    return NextResponse.json(
-      { totalDoc: totalMementos, totalPages, page, results: docs },
-      { status: 200 }
+    const mementos = await algoliaSearch(
+      'mementos',
+      searchText,
+      `userId:${user.uid}`,
+      page
     );
+
+    return NextResponse.json({ ...mementos }, { status: 200 });
   } catch (error) {
-    console.error('Error creating memento:', error);
+    console.error('Error fetching mementos', error);
     return NextResponse.json(
       { message: 'Internal Server Error' },
       { status: 500 }
@@ -205,7 +195,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(newMemento, { status: 201 });
   } catch (error) {
-    console.error('Error creating memento:', error);
+    console.error('Error creating memento', error);
     return NextResponse.json(
       { message: 'Internal Server Error' },
       { status: 500 }

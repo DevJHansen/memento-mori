@@ -20,7 +20,7 @@ const StorageUsage: React.FC<StorageUsageProps> = ({
       <h3 className="text-lg md:text-xl text-center font-bold mb-4">
         Storage Usage
       </h3>
-      <div className="bg-primary rounded-lg overflow-hidden">
+      <div className="bg-backgroundSecondary rounded-lg overflow-hidden">
         <div
           className="bg-accent h-8"
           style={{ width: `${percentageUsed}%` }}

@@ -14,9 +14,13 @@ import {
 
 Chart.register(ArcElement);
 
+export const cssVar = (name: string) => {
+  return getComputedStyle(document.documentElement).getPropertyValue(name);
+};
+
 function ProgressBar({ percentage }: { percentage: number }) {
   return (
-    <div className="w-full bg-foreground rounded-full h-4 mb-4">
+    <div className="w-full bg-background rounded-full h-4 mb-4">
       <div
         className="bg-accent h-4 rounded-full"
         style={{ width: `${percentage}%` }}
@@ -31,9 +35,8 @@ function LifePercentagePie({ percentage }: { percentage: number }) {
     datasets: [
       {
         data: [percentage, 100 - percentage],
-        backgroundColor: ['#d3edfd', '#f74922'],
-        borderColor: ['#011823', '#980656'],
-        borderWidth: 2,
+        backgroundColor: [cssVar('--background'), cssVar('--accent')],
+        borderWidth: 0,
       },
     ],
   };
@@ -73,7 +76,7 @@ export default function Stats() {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-0 max-h-screen overflow-auto">
       {/* Weeks Lived */}
       {weeksLived !== null && (
-        <div className="h-fit p-6 bg-backgroundLight rounded-lg shadow-md text-center">
+        <div className="h-fit p-6 bg-backgroundSecondary rounded-lg shadow-md text-center">
           <h3 className="text-xl font-semibold mb-4">Weeks Lived</h3>
           <ProgressBar
             percentage={(weeksLived / LIFE_EXPECTANCY_WEEKS) * 100}
@@ -87,7 +90,7 @@ export default function Stats() {
 
       {/* Weeks Remaining */}
       {weeksRemaining !== null && (
-        <div className="h-fit p-6 bg-backgroundLight rounded-lg shadow-md text-center">
+        <div className="h-fit p-6 bg-backgroundSecondary rounded-lg shadow-md text-center">
           <h3 className="text-xl font-semibold mb-4">Weeks Remaining</h3>
           <ProgressBar
             percentage={(weeksRemaining / LIFE_EXPECTANCY_WEEKS) * 100}
@@ -99,7 +102,7 @@ export default function Stats() {
 
       {/* Life Percentage */}
       {lifePercentage !== null && (
-        <div className="h-fit p-6 bg-backgroundLight rounded-lg shadow-md text-center flex items-center flex-col">
+        <div className="h-fit p-6 bg-backgroundSecondary rounded-lg shadow-md text-center flex items-center flex-col">
           <h3 className="text-xl font-semibold mb-4">Life Percentage</h3>
           <LifePercentagePie percentage={lifePercentage} />
           <p className="text-3xl font-bold text-foreground mt-4">

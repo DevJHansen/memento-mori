@@ -28,21 +28,21 @@ export default function Navbar() {
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center justify-between w-full">
-            <div className="text-white font-bold text-xl">
+            <div className="text-foreground hover:text-accent font-bold text-xl">
               <Link href="/">Memento Mori</Link>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 {user ? (
                   <Link
-                    className="text-white  px-3 py-2 rounded-md text-sm font-medium"
+                    className="text-foreground hover:text-accent  px-3 py-2 rounded-md text-sm font-medium"
                     href="/app"
                   >
                     Home
                   </Link>
                 ) : (
                   <button
-                    className="text-white  px-3 py-2 rounded-md text-sm font-medium"
+                    className="text-foreground hover:text-accent  px-3 py-2 rounded-md text-sm font-medium"
                     onClick={signIn}
                   >
                     Sign In
@@ -50,7 +50,7 @@ export default function Navbar() {
                 )}
                 {user && (
                   <button
-                    className="text-white  px-3 py-2 rounded-md text-sm font-medium"
+                    className="text-foreground hover:text-accent  px-3 py-2 rounded-md text-sm font-medium"
                     onClick={() => signOut(auth)}
                   >
                     Logout
@@ -63,7 +63,7 @@ export default function Navbar() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white  focus:outline-none focus:text-white"
+              className="inline-flex items-center justify-center p-2 rounded-md text-foreground focus:outline-none focus:text-accent"
               aria-controls="mobile-menu"
               aria-expanded="false"
             >
@@ -80,14 +80,14 @@ export default function Navbar() {
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-right">
           {user ? (
             <Link
-              className="text-white  block px-3 py-2 rounded-md text-base font-medium"
+              className="text-foreground hover:text-accent  block px-3 py-2 rounded-md text-base font-medium"
               href="/app"
             >
               Home
             </Link>
           ) : (
             <button
-              className="text-white  block px-3 py-2 rounded-md text-base font-medium"
+              className="text-foreground hover:text-accent  block px-3 py-2 rounded-md text-base font-medium"
               onClick={signIn}
             >
               Sign In
@@ -95,7 +95,7 @@ export default function Navbar() {
           )}
           {user && (
             <button
-              className="text-white  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
+              className="text-foreground hover:text-accent  block px-3 py-2 rounded-md text-base font-medium text-right w-full"
               onClick={() => signOut(auth)}
             >
               Logout

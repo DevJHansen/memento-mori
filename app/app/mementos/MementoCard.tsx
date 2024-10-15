@@ -4,10 +4,6 @@
 import { fetchImage } from '@/lib/firebase/storage';
 import { Memento } from '@/schemas/memento';
 import { useEffect, useState } from 'react';
-import DOMPurify from 'dompurify';
-import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
 import { Account } from '@/schemas/account';
 import { getDateFromWeek } from '@/utils/lifeUtils';
 
@@ -18,8 +14,7 @@ interface Props {
 
 export default function MementoCard({ memento, account }: Props) {
   const [image, setImage] = useState('');
-
-  const sanitizedHtml = DOMPurify.sanitize(memento.body);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getImage = async () => {
@@ -42,45 +37,26 @@ export default function MementoCard({ memento, account }: Props) {
     getImage();
   }, [image, memento.heroImage.url]);
 
-  const editor = useEditor({
-    extensions: [StarterKit, Underline],
-    content: sanitizedHtml,
-    editorProps: {
-      attributes: {
-        class: 'editor',
-      },
-    },
-    immediatelyRender: false,
-    editable: false,
-  });
-
-  if (!editor) {
-    return null;
-  }
   return (
-    <div
-      key={memento.uid}
-      className="mb-4 p-4 bg-background shadow-md rounded-lg"
-    >
-      {!image ? (
-        <div className="animate-pulse h-48 bg-gray-400 rounded-t-lg"></div>
-      ) : (
-        memento.heroImage && (
-          <img
-            src={image}
-            alt={`memento hero image`}
-            className="w-full h-48 object-cover rounded-t-lg"
-          />
-        )
-      )}
-      <h2 className="text-xl font-semibold mt-2">{memento.title}</h2>
-
-      <div className="editor-container">
-        <EditorContent editor={editor} />
+    <div className="relative max-w-sm w-full h-64 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-all duration-300">
+      <div className="w-full h-full bg-backgroundSecondary absolute inset-0">
+        <img
+          className={`w-full h-full object-cover transition-opacity duration-500 ${
+            isLoading || !image ? 'opacity-0' : 'opacity-100'
+          }`}
+          src={image}
+          alt={`${memento.title}-hero-image`}
+          onLoad={() => setIsLoading(false)}
+        />
       </div>
-      <p className="text-gray-500 text-sm mt-2">
-        {getDateFromWeek(account.dob.unix, memento.week)}
-      </p>
+      <div className="absolute inset-0 flex flex-col justify-end bg-black bg-opacity-30 p-4 cursor-pointer">
+        <h2 className="text-textOnDark font-bold text-lg mb-2">
+          {memento.title}
+        </h2>
+        <p className="text-textOnDark text-sm">
+          {getDateFromWeek(account.dob.unix, memento.week)}
+        </p>
+      </div>
     </div>
   );
 }

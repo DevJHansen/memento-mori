@@ -27,11 +27,11 @@ export default function Modal({ isOpen, onClose, children }: Props) {
       onClick={onClose}
     >
       <div
-        className="relative bg-background rounded-lg shadow-lg w-full max-w-xl mx-4 p-4 max-h-[95vh]"
+        className="relative bg-background rounded-lg shadow-lg w-full max-w-xl mx-4 p-4 max-h-[95vh] border-[1px] border-foreground"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 w-full flex justify-end" onClick={onClose}>
-          <div className="text-accent cursor-pointer hover:bg-backgroundLight rounded-full p-[2px]">
+          <div className="text-accent cursor-pointer hover:bg-backgroundSecondary rounded-full p-[2px]">
             <span className="sr-only">Close modal</span>
             <MdClose size={14} />
           </div>

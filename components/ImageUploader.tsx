@@ -44,7 +44,7 @@ export default function ImageUploader({
       className={`flex flex-col items-center rounded justify-center p-6 ${
         !loading && (preview || imageUrl)
           ? 'bg-background'
-          : 'bg-backgroundLight'
+          : 'bg-backgroundSecondary'
       }`}
     >
       {loading && <LoadingSpinner />}

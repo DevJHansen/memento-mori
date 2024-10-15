@@ -2,10 +2,12 @@ import { Memento, MementoCache } from '@/schemas/memento';
 import { getAuthToken } from '../firebase/auth';
 
 export interface GetMementosResult {
-  totalDoc: number;
-  totalPages: number;
+  nbHits: number;
+  nbPages: number;
   page: number;
-  results: Memento[];
+  hits: {
+    hits: Memento[];
+  };
 }
 
 export const getMementoCache = async (): Promise<MementoCache> => {
