@@ -14,7 +14,7 @@ import {
 
 Chart.register(ArcElement);
 
-export const cssVar = (name: string) => {
+const cssVar = (name: string) => {
   return getComputedStyle(document.documentElement).getPropertyValue(name);
 };
 
