@@ -101,10 +101,10 @@ export default function CompleteSignUp() {
       <div className="text-foreground flex flex-col items-center space-y-4">
         <MdSettings size={48} className="text-accent" />
         <h1 className="font-bold text-2xl">
-          We're still adding the finishing touches.
+          We&apos;re still adding the finishing touches.
         </h1>
         <p className="text-sm">
-          If you're interested in trying out the app you can follow me on{' '}
+          If you&apos;re interested in trying out the app you can follow me on{' '}
           <a
             target="_blank"
             rel="noreferrer"
