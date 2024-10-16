@@ -7,8 +7,8 @@ function SearchComponent() {
   return (
     <div className="relative">
       <div
-        className={`absolute top-0 right-0 z-50 bg-accent border-2 border-accent rounded-full cursor-pointer transition-all hover:scale-125 duration-300 opacity-50 hover:opacity-100 ${
-          isOpen && 'right-6'
+        className={`fixed top-20 right-4 sm:right-8 md:right-12 lg:right-16 z-50 bg-accent border-2 border-accent rounded-full cursor-pointer transition-all hover:scale-125 duration-300 opacity-50 hover:opacity-100 ${
+          isOpen && 'right-12'
         }`}
         onMouseLeave={() => setIsOpen(false)}
         onMouseEnter={() => setIsOpen(true)}
@@ -26,7 +26,7 @@ function SearchComponent() {
               placeholder="Search..."
             />
           </div>
-          <div className="bg-accent p-2 rounded-full">
+          <div className="bg-transparent p-2 rounded-full">
             <MdSearch size={20} />
           </div>
         </div>

@@ -81,6 +81,7 @@ export default function AddMementoModal() {
         setBody(memento.body);
         setHeroImageUrl(imageUrl ?? '');
         setMementoId(memento.uid);
+        setTotalSize(memento.heroImage.size);
         return;
       } else {
         setMementoLoadingState('error');
@@ -202,7 +203,10 @@ export default function AddMementoModal() {
   };
 
   const isFormValid =
-    title && body !== '<p></p>' && (heroImageFile !== null || heroImageUrl);
+    title &&
+    body &&
+    body !== '<p></p>' &&
+    (heroImageFile !== null || heroImageUrl);
 
   return (
     <Modal isOpen={modalState.isOpen} onClose={handleClose}>
@@ -257,7 +261,7 @@ export default function AddMementoModal() {
                       </p>
                     </div>
                   ) : (
-                    <div className="text-sm mt-2 text-foreground">
+                    <div className="text-sm mb-2 mt-4 text-foreground">
                       Total File Size: {(totalSize / (1024 * 1024)).toFixed(2)}{' '}
                       MB
                     </div>

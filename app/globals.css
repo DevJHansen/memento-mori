@@ -43,9 +43,17 @@ body {
   }
 }
 
+@layer components {
+  .gradient-bg {
+    @apply bg-gradient-to-r from-accentGradient-gradientStart to-accentGradient-gradientEnd;
+  }
+  .gradient-bg-secondary {
+    @apply bg-gradient-to-r from-accentSecondaryGradient-gradientStart to-accentSecondaryGradient-gradientEnd;
+  }
+}
+
 .editor-container .ProseMirror {
   min-height: 20vh;
-  max-height: 60vh;
   width: 100%;
   margin-top: 8px;
   padding: 16px;

@@ -8,7 +8,7 @@ import { atom, useRecoilState } from 'recoil';
 import MementoCard from './MementoCard';
 import { accountState } from '@/components/ProtectedRoute';
 import { MdPhotoLibrary } from 'react-icons/md';
-import SearchComponent from '@/components/FloatingSearch';
+import SearchComponent from './FloatingSearch';
 
 interface MementoState {
   status: LoadingState;

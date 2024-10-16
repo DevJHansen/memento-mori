@@ -9,12 +9,42 @@ import { DotImage } from './DotImage';
 import { getMementoCache } from '@/lib/api/momento';
 import {
   getDateFromWeek,
+  getWeekFromDate,
   getWeeksLived,
   LIFE_EXPECTANCY_WEEKS,
+  millisecondsToYears,
 } from '@/utils/lifeUtils';
 import Tooltip from '@/components/Tooltip';
 import { mementoCacheState } from './recoil';
 import ScaleControl from './ScaleControl';
+import ToolsComponent from './FloatingTools';
+
+const getHeading = (age: number) => {
+  console.log(age);
+  if (age >= 0 && age <= 9) {
+    return '0 - 9';
+  }
+  if (age >= 10 && age <= 19) {
+    return '10 - 19';
+  }
+  if (age >= 20 && age <= 29) {
+    return '20 - 29';
+  }
+  if (age >= 30 && age <= 39) {
+    return '30 - 39';
+  }
+  if (age >= 40 && age <= 49) {
+    return '40 - 49';
+  }
+  if (age >= 50 && age <= 59) {
+    return '50 - 59';
+  }
+  if (age >= 60 && age <= 69) {
+    return '60 - 69';
+  }
+
+  return '70 - 75';
+};
 
 export default function Grid() {
   const [account] = useRecoilState(accountState);
@@ -22,8 +52,17 @@ export default function Grid() {
   const currentWeekRef = useRef<HTMLDivElement | null>(null);
   const [, createMemento] = useRecoilState(addMementoState);
   const [cache, setCache] = useRecoilState(mementoCacheState);
-  const [scale, setScale] = useState(8);
+  const [scale, setScale] = useState(12);
+  const [topHeading, setTopHeading] = useState('0 - 9');
   const gridRef = useRef<HTMLDivElement>(null);
+  const [startDate, setStartDate] = useState({
+    week: 0,
+    date: '',
+  });
+  const [endDate, setEndDate] = useState({
+    week: LIFE_EXPECTANCY_WEEKS,
+    date: '',
+  });
 
   useEffect(() => {
     const getCache = async () => {
@@ -78,14 +117,71 @@ export default function Grid() {
     return null;
   }
 
+  const handleSetStartDate = (date: string) => {
+    const parsedDate = new Date(date);
+
+    if (isNaN(parsedDate.getTime())) {
+      return;
+    }
+
+    const dateToUnix = +parsedDate;
+
+    const week = getWeekFromDate(account.account!.dob.unix, dateToUnix, 'down');
+    const age = millisecondsToYears(dateToUnix - account.account!.dob.unix);
+
+    setTopHeading(getHeading(age));
+
+    setStartDate({
+      week: week,
+      date,
+    });
+  };
+
+  const handleSetEndDate = (date: string) => {
+    const parsedDate = new Date(date);
+
+    if (isNaN(parsedDate.getTime())) {
+      return;
+    }
+
+    const dateToUnix = +parsedDate;
+
+    const week = getWeekFromDate(account.account!.dob.unix, dateToUnix, 'up');
+
+    setEndDate({
+      week: week,
+      date,
+    });
+  };
+
+  const handleResetFilter = () => {
+    setTopHeading('0 - 9');
+
+    setStartDate({
+      week: 0,
+      date: '',
+    });
+    setEndDate({
+      week: LIFE_EXPECTANCY_WEEKS,
+      date: '',
+    });
+  };
+
   const lifeGrid = [];
   for (let i = 0; i < LIFE_EXPECTANCY_WEEKS; i++) {
+    if (i < startDate.week) {
+      continue;
+    }
+    if (i > endDate.week) {
+      continue;
+    }
+
     const isLived = i < weeksLived;
     const isCurrentWeek = i === weeksLived;
 
     const decade = Math.floor(i / 520) * 10;
-    const displayDecade = decade + 1;
-    const endDecade = decade + 10 > 70 ? 75 : decade + 10;
+    const displayDecade = decade;
+    const endDecade = decade + 10 > 70 ? 75 : decade + 9;
 
     if (i > 0 && i % 520 === 0) {
       lifeGrid.push(
@@ -156,23 +252,33 @@ export default function Grid() {
   return (
     <>
       <AddMementoModal />
+      <ScaleControl scale={scale} setScale={setScale} />
+      <ToolsComponent
+        startDate={startDate.date}
+        endDate={endDate.date}
+        setStartDate={handleSetStartDate}
+        setEndDate={handleSetEndDate}
+        handleReset={handleResetFilter}
+      />
       <div className="mb-4">
-        <div className="mb-6">
-          <h2 className="text-2xl">
-            {account.account!.firstName}&apos;s Lifeline.
-          </h2>
-          <p className="py-2 text-xs text-foreground">
-            Life is a collection of moments. The lifeline divides an average
-            lifespan of 75 years into weekly circles. Click on a circle to add a
-            memento—images and text that capture your experiences. As you fill
-            in each week, you &quot;colour in&quot; your life grid, creating a
-            vivid tapestry of your journey.
-          </p>
+        <div className="relative">
+          <div className="mb-6 bg-background z-20 w-full">
+            <h2 className="text-2xl">
+              {account.account!.firstName}&apos;s Lifeline.
+            </h2>
+            <p className="py-2 text-xs text-foreground">
+              Life is a collection of moments. The lifeline divides an average
+              lifespan of 75 years into weekly squares. Click on a square to add
+              a memento—image and text that capture your experiences. As you
+              fill in each week, you{' '}
+              <u className="text-accent">&quot;colour in&quot;</u> your
+              lifeline, creating a vivid tapestry of your journey.
+            </p>
+          </div>
         </div>
-        <ScaleControl scale={scale} setScale={setScale} />
       </div>
       <div className="pb-8" ref={gridRef}>
-        <h3 className="mb-4 text-xs">0 - 10</h3>
+        <h3 className="mb-4 text-xs">{topHeading}</h3>
         <div className="flex flex-wrap">{lifeGrid}</div>
       </div>
     </>

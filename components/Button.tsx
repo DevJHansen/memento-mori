@@ -28,7 +28,7 @@ export const Button = ({
       className={`${
         outline
           ? 'border-accent cursor-pointer border-2 text-center text-accent font-bold py-2 px-4 rounded-md min-w-[120px] flex items-center justify-center hover:bg-accent hover:text-background'
-          : 'bg-accent border-accent border-2 cursor-pointer text-background text-center font-bold py-2 px-4 rounded-md min-w-[120px] flex items-center justify-center hover:bg-accentSecondary hover:border-accentSecondary'
+          : 'bg-accent border-2 border-accent cursor-pointer text-background text-center font-bold py-2 px-4 rounded-md min-w-[120px] flex items-center justify-center hover:bg-accentSecondary'
       } ${className} ${loading && 'opacity-50'} ${
         disabled &&
         'bg-backgroundSecondary  border-0 border-backgroundSecondary'

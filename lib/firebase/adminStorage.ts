@@ -31,7 +31,7 @@ export async function resizeImage(
     withoutEnlargement: true,
   };
 
-  return image.resize(resizeOptions).toFormat('webp').toBuffer();
+  return image.rotate().resize(resizeOptions).toFormat('webp').toBuffer();
 }
 
 export async function deleteFileFromGCS(fileName: string): Promise<void> {

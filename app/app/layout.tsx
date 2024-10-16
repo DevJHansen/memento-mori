@@ -12,7 +12,7 @@ export default function RootLayout({
   return (
     <RecoilRoot>
       <AuthNavbar />
-      <div className="p-4 sm:p-8 md:p-12 lg:p-16">
+      <div className="py-12 px-4 sm:px-8 md:px-12 lg:px-16">
         <ProtectedRoute>{children}</ProtectedRoute>
       </div>
     </RecoilRoot>
