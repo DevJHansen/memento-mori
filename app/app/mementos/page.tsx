@@ -2,7 +2,7 @@
 
 import { Loading } from '@/components/Loading';
 import { getMementos } from '@/lib/api/momento';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import MementoCard from './MementoCard';
 import { accountState } from '@/components/ProtectedRoute';
@@ -78,7 +78,13 @@ export default function Timeline() {
     };
 
     handleGetMementos();
-  }, [mementos.status, mementos.results?.hits.hits.length, fetchMementos]);
+  }, [
+    mementos.status,
+    mementos.results?.hits.hits.length,
+    fetchMementos,
+    mementos.results,
+    setMementos,
+  ]);
 
   useEffect(() => {
     if (viewMemento.memento) {
@@ -92,48 +98,48 @@ export default function Timeline() {
     };
   }, [viewMemento]);
 
-  const handleScroll = async () => {
-    if (
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
-      !loadingMore &&
-      mementos.results &&
-      page < mementos.results.nbPages - 1
-    ) {
-      setLoadingMore(true);
-      const nextPage = page + 1;
-
-      try {
-        const newMementos = await getMementos(nextPage);
-        setMementos((prev) => ({
-          status: 'success',
-          results: {
-            ...prev.results,
-            hits: {
-              hits: [
-                ...(prev.results?.hits.hits || []),
-                ...newMementos.hits.hits,
-              ],
-            },
-            nbHits: newMementos.nbHits,
-            nbPages: newMementos.nbPages,
-            page: nextPage,
-          },
-        }));
-        setPage(nextPage);
-      } catch (error) {
-        console.error('Error fetching more mementos:', error);
-      } finally {
-        setLoadingMore(false);
-      }
-    }
-  };
-
   useEffect(() => {
+    const handleScroll = async () => {
+      if (
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 500 &&
+        !loadingMore &&
+        mementos.results &&
+        page < mementos.results.nbPages - 1
+      ) {
+        setLoadingMore(true);
+        const nextPage = page + 1;
+
+        try {
+          const newMementos = await getMementos(nextPage);
+          setMementos((prev) => ({
+            status: 'success',
+            results: {
+              ...prev.results,
+              hits: {
+                hits: [
+                  ...(prev.results?.hits.hits || []),
+                  ...newMementos.hits.hits,
+                ],
+              },
+              nbHits: newMementos.nbHits,
+              nbPages: newMementos.nbPages,
+              page: nextPage,
+            },
+          }));
+          setPage(nextPage);
+        } catch (error) {
+          console.error('Error fetching more mementos:', error);
+        } finally {
+          setLoadingMore(false);
+        }
+      }
+    };
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [loadingMore, page, mementos.results]);
+  }, [loadingMore, page, mementos.results, setMementos]);
 
   if (mementos.status === 'loading') {
     return (
