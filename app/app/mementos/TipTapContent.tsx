@@ -29,7 +29,7 @@ export default function TipTapContent({ content }: Props) {
       setContentState(content);
       editor.commands.setContent(content);
     }
-  }, [content, editor]);
+  }, [content, contentState, editor]);
 
   return (
     <div className="editor-container padding-0">
