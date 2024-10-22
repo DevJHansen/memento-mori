@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { MdClose, MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
@@ -36,7 +37,7 @@ export default function FullMemento() {
     };
 
     getImage();
-  }, [image, viewMemento.memento?.heroImage.url]);
+  }, [image, viewMemento.memento, viewMemento.memento?.heroImage.url]);
 
   if (!viewMemento.memento) {
     return;

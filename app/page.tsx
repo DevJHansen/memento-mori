@@ -18,9 +18,10 @@ export default function Home() {
         <section className="flex flex-col items-center justify-center text-center pt-20 px-5 gap-4 md:gap-8">
           <h1 className="text-5xl font-bold">Memento Mori Calendar</h1>
           <p className="max-w-2xl text-lg text-foreground">
-            Unveil your life&apos;s journey on an interactive 80-year timeline.
-            Add personal memories to each week, reflect on where you&apos;ve
-            been, and embrace intentional living every day.
+            Life, Visualized: Make Every Week Count. Unveil your life&apos;s
+            journey on an interactive 80-year timeline. Add personal memories to
+            each week, reflect on where you&apos;ve been, and embrace
+            intentional living every day.
           </p>
           <AuthButton className="border-none text-foreground" />
           <img alt="hero-image" src={hero.src} />
@@ -31,7 +32,7 @@ export default function Home() {
             <div className="flex flex-col justify-center items-center gap-4">
               <LottiePlayer
                 data={timelineAnimation}
-                style={{ width: '100%', maxWidth: '400px', height: 'auto' }}
+                style={{ width: '100%', maxWidth: '350px', height: 'auto' }}
               />
               <h1 className="text-5xl font-bold">Interactive Life Timeline</h1>
               <p className="max-w-2xl text-lg text-foreground">
