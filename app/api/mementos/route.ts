@@ -68,10 +68,10 @@ export async function POST(req: NextRequest) {
       week: z.number(),
       heroImageFile: z
         .instanceof(File)
-        .refine((file) => file.size < 0, {
+        .refine((file) => file.size > 0, {
           message: 'Hero image is required',
         })
-        .refine((file) => file.size > DEFAULT_MAX_IMAGE_SIZE, {
+        .refine((file) => file.size <= DEFAULT_MAX_IMAGE_SIZE, {
           message: 'Image too large',
         }),
     });

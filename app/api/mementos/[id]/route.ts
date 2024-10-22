@@ -77,7 +77,7 @@ export async function PUT(req: NextRequest) {
       bodyContent: z.string().min(1, 'Body content is required').max(1000),
       heroImageFile: z
         .instanceof(File)
-        .refine((file) => file.size > DEFAULT_MAX_IMAGE_SIZE, {
+        .refine((file) => file.size <= DEFAULT_MAX_IMAGE_SIZE, {
           message: 'Image too large',
         })
         .optional(),
