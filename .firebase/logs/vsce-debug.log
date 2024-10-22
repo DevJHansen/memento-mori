@@ -10,3 +10,7 @@
 [debug] [2024-10-22T15:09:53.406Z] [Firebase Plugin] VSCode notification server listening on port 40001
 [debug] [2024-10-22T15:09:54.377Z] 'fdc build' failed with error: Unable to build your Data Connect schema and connectors (exit code 1): E1022 17:09:54.372930   60153 cmd.go:41] Error loading data connect config: could not find dataconnect.yaml in `/Users/Stizo/Desktop/memento-mori/dataconnect`
  {"metadata":{"emulator":{"name":"dataconnect"},"message":"'fdc build' failed with error: Unable to build your Data Connect schema and connectors (exit code 1): E1022 17:09:54.372930   60153 cmd.go:41] Error loading data connect config: could not find dataconnect.yaml in `/Users/Stizo/Desktop/memento-mori/dataconnect`\n"}}
+[debug] [2024-10-22T17:47:12.296Z] [Firebase Plugin] Activating Firebase extension.
+[debug] [2024-10-22T17:47:12.330Z] [Firebase Plugin] VSCode notification server listening on port 40001
+[debug] [2024-10-22T17:47:12.845Z] 'fdc build' failed with error: Unable to build your Data Connect schema and connectors (exit code 1): E1022 19:47:12.839475   64270 cmd.go:41] Error loading data connect config: could not find dataconnect.yaml in `/Users/Stizo/Desktop/memento-mori/dataconnect`
+ {"metadata":{"emulator":{"name":"dataconnect"},"message":"'fdc build' failed with error: Unable to build your Data Connect schema and connectors (exit code 1): E1022 19:47:12.839475   64270 cmd.go:41] Error loading data connect config: could not find dataconnect.yaml in `/Users/Stizo/Desktop/memento-mori/dataconnect`\n"}}

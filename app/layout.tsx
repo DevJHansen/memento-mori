@@ -3,8 +3,8 @@ import Script from 'next/script';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Memento Mori',
-  description: 'Tik tok',
+  title: 'Memento Mori Calendar',
+  description: 'Life, Visualized: Make every week count.',
 };
 
 export default function RootLayout({
