@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
       firstName: newAccountData.firstName,
       surname: newAccountData.surname,
       dob: newAccountData.dob,
-      plan: newAccountData.plan,
+      plan: 'pro',
       createdAt: {
         unix: now.getTime(),
         timestamp: now.toISOString(),
@@ -88,6 +88,7 @@ export async function POST(req: NextRequest) {
         bytesUsed: 0,
         maxUsage: DEFAULT_STORAGE_LIMIT,
       },
+      weeklyReminders: newAccountData.weeklyReminders,
     };
 
     await adminFirestore.collection(ACCOUNTS).doc(user.uid).create(newAccount);

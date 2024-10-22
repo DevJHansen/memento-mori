@@ -24,8 +24,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-background shadow-foreground shadow-sm fixed w-screen top-0">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-background shadow-foreground shadow-sm sticky w-screen top-0 z-50">
+      <div className="mx-auto px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center justify-between w-full">
             <div className="text-foreground hover:text-accent font-bold text-xl">
@@ -77,10 +77,10 @@ export default function Navbar() {
         className={`${isOpen ? 'block' : 'hidden'} md:hidden`}
         id="mobile-menu"
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-right">
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-right w-full">
           {user ? (
             <Link
-              className="text-foreground hover:text-accent  block px-3 py-2 rounded-md text-base font-medium"
+              className="text-foreground hover:text-accent  block px-3 py-2 rounded-md text-base text-right font-medium w-full"
               href="/app"
               onClick={() => setIsOpen(false)}
             >
@@ -88,7 +88,7 @@ export default function Navbar() {
             </Link>
           ) : (
             <button
-              className="text-foreground hover:text-accent  block px-3 py-2 rounded-md text-base font-medium"
+              className="text-foreground hover:text-accent  block px-3 py-2 rounded-md text-base text-right font-medium w-full"
               onClick={signIn}
             >
               Sign In

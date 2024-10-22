@@ -1,0 +1,12 @@
+[debug] [2024-10-21T10:57:32.424Z] [Firebase Plugin] Activating Firebase extension.
+[debug] [2024-10-21T10:57:32.554Z] [Firebase Plugin] VSCode notification server listening on port 40001
+[info] i  dataconnect: downloading dataconnect-emulator-1.5.1... {"metadata":{"emulator":{"name":"dataconnect"},"message":"downloading dataconnect-emulator-1.5.1..."}}
+[debug] [2024-10-21T10:57:32.561Z] >>> [apiv2][query] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-macos-v1.5.1 
+[debug] [2024-10-21T10:57:33.882Z] <<< [apiv2][status] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-macos-v1.5.1 200
+[debug] [2024-10-21T10:57:33.883Z] <<< [apiv2][body] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-macos-v1.5.1 [stream]
+[debug] [2024-10-21T10:57:41.080Z] 'fdc build' failed with error: Unable to build your Data Connect schema and connectors (exit code 1): E1021 12:57:41.077110   29551 cmd.go:41] Error loading data connect config: could not find dataconnect.yaml in `/Users/Stizo/Desktop/memento-mori/dataconnect`
+ {"metadata":{"emulator":{"name":"dataconnect"},"message":"'fdc build' failed with error: Unable to build your Data Connect schema and connectors (exit code 1): E1021 12:57:41.077110   29551 cmd.go:41] Error loading data connect config: could not find dataconnect.yaml in `/Users/Stizo/Desktop/memento-mori/dataconnect`\n"}}
+[debug] [2024-10-22T15:09:53.371Z] [Firebase Plugin] Activating Firebase extension.
+[debug] [2024-10-22T15:09:53.406Z] [Firebase Plugin] VSCode notification server listening on port 40001
+[debug] [2024-10-22T15:09:54.377Z] 'fdc build' failed with error: Unable to build your Data Connect schema and connectors (exit code 1): E1022 17:09:54.372930   60153 cmd.go:41] Error loading data connect config: could not find dataconnect.yaml in `/Users/Stizo/Desktop/memento-mori/dataconnect`
+ {"metadata":{"emulator":{"name":"dataconnect"},"message":"'fdc build' failed with error: Unable to build your Data Connect schema and connectors (exit code 1): E1022 17:09:54.372930   60153 cmd.go:41] Error loading data connect config: could not find dataconnect.yaml in `/Users/Stizo/Desktop/memento-mori/dataconnect`\n"}}

@@ -1,35 +1,40 @@
 'use client';
 
 import { Loading } from '@/components/Loading';
-import { getMementos, GetMementosResult } from '@/lib/api/momento';
-import { LoadingState } from '@/schemas/loading';
-import { useEffect } from 'react';
-import { atom, useRecoilState } from 'recoil';
+import { getMementos } from '@/lib/api/momento';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import MementoCard from './MementoCard';
 import { accountState } from '@/components/ProtectedRoute';
 import { MdPhotoLibrary } from 'react-icons/md';
 import SearchComponent from './FloatingSearch';
-
-interface MementoState {
-  status: LoadingState;
-  results: GetMementosResult | null;
-}
-
-const mementosState = atom<MementoState>({
-  key: 'mementosState',
-  default: {
-    status: 'initial',
-    results: null,
-  },
-});
+import { mementosState, viewMementoState } from './recoil';
+import FullMemento from './FullMemento';
+import { Memento } from '@/schemas/memento';
 
 export default function Timeline() {
   const [mementos, setMementos] = useRecoilState(mementosState);
+  const [viewMemento, setViewMemento] = useRecoilState(viewMementoState);
   const [account] = useRecoilState(accountState);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(0);
+
+  const fetchMementos = useCallback(async (page: number) => {
+    try {
+      const res = await getMementos(page);
+      return res;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }, []);
 
   useEffect(() => {
     const handleGetMementos = async () => {
-      if (mementos.status !== 'initial' || mementos.results?.hits.hits.length) {
+      if (
+        mementos.status !== 'initial' ||
+        (mementos.results && mementos.results.hits.hits.length)
+      ) {
         return;
       }
 
@@ -39,12 +44,30 @@ export default function Timeline() {
       });
 
       try {
-        const res = await getMementos(0);
-
+        const initialRes = await fetchMementos(0);
         setMementos({
           status: 'success',
-          results: res,
+          results: initialRes,
         });
+
+        if (window.innerHeight >= document.body.scrollHeight) {
+          const res = await fetchMementos(1);
+
+          const resHits = res.hits.hits;
+
+          setMementos((prev) => ({
+            status: 'success',
+            results: {
+              ...prev.results,
+              hits: {
+                hits: [...initialRes.hits.hits, ...resHits],
+              },
+              nbHits: res.nbHits,
+              nbPages: res.nbPages,
+              page: res.page,
+            },
+          }));
+        }
       } catch (error) {
         console.error(error);
         setMementos({
@@ -55,7 +78,62 @@ export default function Timeline() {
     };
 
     handleGetMementos();
-  }, [mementos.results?.hits.hits.length, mementos.status, setMementos]);
+  }, [mementos.status, mementos.results?.hits.hits.length, fetchMementos]);
+
+  useEffect(() => {
+    if (viewMemento.memento) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [viewMemento]);
+
+  const handleScroll = async () => {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
+      !loadingMore &&
+      mementos.results &&
+      page < mementos.results.nbPages - 1
+    ) {
+      setLoadingMore(true);
+      const nextPage = page + 1;
+
+      try {
+        const newMementos = await getMementos(nextPage);
+        setMementos((prev) => ({
+          status: 'success',
+          results: {
+            ...prev.results,
+            hits: {
+              hits: [
+                ...(prev.results?.hits.hits || []),
+                ...newMementos.hits.hits,
+              ],
+            },
+            nbHits: newMementos.nbHits,
+            nbPages: newMementos.nbPages,
+            page: nextPage,
+          },
+        }));
+        setPage(nextPage);
+      } catch (error) {
+        console.error('Error fetching more mementos:', error);
+      } finally {
+        setLoadingMore(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [loadingMore, page, mementos.results]);
 
   if (mementos.status === 'loading') {
     return (
@@ -75,34 +153,41 @@ export default function Timeline() {
     );
   }
 
-  if (
-    mementos.status === 'success' &&
-    mementos.results?.hits.hits.length === 0
-  ) {
-    return (
-      <div className="text-foreground flex flex-col items-center space-y-4">
-        <MdPhotoLibrary size={48} className="text-accent" />
-        <h1 className="font-bold text-2xl">No mementos found.</h1>
-        <p className="text-sm">
-          You haven&apos;t added any momentos yet. Go to your life to get
-          started.
-        </p>
-      </div>
-    );
-  }
+  const handleView = (memento: Memento, index: number) => {
+    setViewMemento({
+      memento,
+      index,
+    });
+  };
 
   return (
     <div>
       <SearchComponent />
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+      <FullMemento />
+      {mementos.status === 'success' &&
+        mementos.results?.hits.hits.length === 0 && (
+          <div className="text-foreground flex flex-col items-center space-y-4">
+            <MdPhotoLibrary size={48} className="text-accent" />
+            <h1 className="font-bold text-2xl">No mementos found.</h1>
+            <p className="text-sm">
+              You haven&apos;t added any momentos yet. Go to your life to get
+              started.
+            </p>
+          </div>
+        )}
+      <div
+        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4`}
+      >
         {mementos.status === 'success' &&
           mementos.results!.hits.hits.length > 0 && (
             <>
-              {mementos.results!.hits.hits.map((memento) => (
+              {mementos.results!.hits.hits.map((memento, i) => (
                 <MementoCard
                   memento={memento}
                   key={memento.uid}
                   account={account.account!}
+                  handleView={handleView}
+                  index={i}
                 />
               ))}
             </>

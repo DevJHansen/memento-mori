@@ -4,8 +4,9 @@ import { dateObject } from './date';
 const planEnums = z.enum(['free', 'pro']);
 
 export const AccountSchema = z.object({
-  firstName: z.string(),
-  surname: z.string(),
+  firstName: z.string().max(50, 'Text is too long'),
+  surname: z.string().max(50, 'Text is too long'),
+  weeklyReminders: z.boolean(),
   createdAt: dateObject,
   dob: dateObject,
   uid: z.string(),
@@ -17,10 +18,10 @@ export const AccountSchema = z.object({
 });
 
 export const NewAccountSchema = z.object({
-  firstName: z.string(),
-  surname: z.string(),
+  firstName: z.string().max(50, 'Text is too long'),
+  surname: z.string().max(50, 'Text is too long'),
   dob: dateObject,
-  plan: planEnums,
+  weeklyReminders: z.boolean(),
 });
 
 export type Account = z.infer<typeof AccountSchema>;

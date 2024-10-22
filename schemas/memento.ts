@@ -11,8 +11,8 @@ export const ImageSchema = z.object({
 export type Image = z.infer<typeof ImageSchema>;
 
 export const MementoSchema = z.object({
-  title: z.string(),
-  body: z.string(),
+  title: z.string().max(50, 'Text is too long'),
+  body: z.string().max(1000, 'Text is too long'),
   createdAt: dateObject,
   updatedAt: dateObject.optional(),
   heroImage: ImageSchema,

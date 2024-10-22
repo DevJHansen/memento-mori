@@ -63,18 +63,21 @@ export async function POST(req: NextRequest) {
 
   try {
     const formSchema = z.object({
-      title: z.string().min(1, 'Title is required'),
-      bodyContent: z.string().min(1, 'Body content is required'),
+      title: z.string().min(1, 'Title is required').max(100),
+      bodyContent: z.string().min(1, 'Body content is required').max(1000),
       week: z.number(),
-      heroImageFile: z.instanceof(File).refine((file) => file.size > 0, {
-        message: 'Hero image is required',
-      }),
+      heroImageFile: z
+        .instanceof(File)
+        .refine((file) => file.size > 0, {
+          message: 'Hero image is required',
+        })
+        .refine((file) => file.size > DEFAULT_MAX_IMAGE_SIZE, {
+          message: 'Image too large',
+        }),
     });
 
     const body = await req.formData();
     const getWeek = body.get('week')?.toString();
-
-    console.log(getWeek);
 
     if (!getWeek) {
       return NextResponse.json({ message: 'Invalid week' }, { status: 400 });

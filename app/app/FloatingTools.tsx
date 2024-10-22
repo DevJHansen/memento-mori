@@ -22,7 +22,7 @@ function ToolsComponent({
     <div className="relative">
       <div
         className={`fixed top-20 right-4 sm:right-8 md:right-12 lg:right-16 z-40 bg-accent border-2 border-accent rounded-full cursor-pointer transition-all hover:scale-125 duration-300 opacity-50 hover:opacity-100 ${
-          isOpen && 'right-16'
+          isOpen && 'right-[56px] md:right-12'
         }`}
         onMouseLeave={() => setIsOpen(false)}
         onMouseEnter={() => setIsOpen(true)}

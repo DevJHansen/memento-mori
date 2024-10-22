@@ -7,6 +7,7 @@ import { signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { Button } from './Button';
 import { LoadingSpinner } from './LoadingSpinner';
+import { FcGoogle } from 'react-icons/fc';
 
 interface Props {
   className: string;
@@ -39,10 +40,8 @@ export default function AuthButton({ className }: Props) {
   }
 
   return (
-    <Button
-      text={'Sign In with Google'}
-      onClick={signIn}
-      className={className}
-    />
+    <Button text={'Get Started'} onClick={signIn} className={className}>
+      <FcGoogle className="bg-foreground rounded-full ml-2" />
+    </Button>
   );
 }

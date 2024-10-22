@@ -1,75 +1,101 @@
+/* eslint-disable @next/next/no-img-element */
 import AuthButton from '@/components/AuthButton';
 import Navbar from '@/components/Navbar';
+import hero from '@/public/hero.png';
+import grid from '@/public/grid.png';
+import create from '@/public/create.png';
+import gallery from '@/public/gallery.png';
+import { LottiePlayer } from '@/components/LazyLottie';
+import journalAnimation from '@/public/journal.json';
+import feedAnimation from '@/public/feed.json';
+import timelineAnimation from '@/public/timeline.json';
 
 export default function Home() {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen flex flex-col justify-between bg-background text-foreground">
-        {/* Hero Section */}
-        <section className="flex flex-col items-center justify-center h-screen text-center py-20 px-5">
-          <h1 className="text-5xl font-bold mb-5">Memento Mori</h1>
-          <p className="max-w-2xl text-lg mb-8 text-foreground">
-            Track your life week by week, reflect on your journey, and visualize
-            how much time you have left. Embrace each moment with intention.
+      <div className="flex flex-col justify-between bg-background text-foreground">
+        <section className="flex flex-col items-center justify-center text-center pt-20 px-5 gap-4 md:gap-8">
+          <h1 className="text-5xl font-bold">Memento Mori Calendar</h1>
+          <p className="max-w-2xl text-lg text-foreground">
+            Unveil your life&apos;s journey on an interactive 80-year timeline.
+            Add personal memories to each week, reflect on where you&apos;ve
+            been, and embrace intentional living every day.
           </p>
-          <div>
-            <AuthButton className="border-none" />
-          </div>
+          <AuthButton className="border-none text-foreground" />
+          <img alt="hero-image" src={hero.src} />
         </section>
 
-        {/* Stats Section */}
-        <section className="py-20 px-5">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">
-              How Much Time Do You Have Left?
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="flex flex-col items-center bg-backgroundSecondary text-accent p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
-                <h3 className="text-4xl font-semibold mb-2">75 Years</h3>
-                <p className="text-foreground text-center">
-                  The average life expectancy is 75 years. How will you spend
-                  yours?
-                </p>
-              </div>
-              <div className="flex flex-col items-center bg-backgroundSecondary text-accent p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
-                <h3 className="text-4xl font-semibold mb-2">3900 Weeks</h3>
-                <p className="text-foreground text-center">
-                  That’s 3,900 weeks of life. Track each one and make it count.
-                </p>
-              </div>
-              <div className="flex flex-col items-center bg-backgroundSecondary text-accent p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow">
-                <h3 className="text-4xl font-semibold mb-2">
-                  Live Intentionally
-                </h3>
-                <p className="text-foreground text-center">
-                  Reflect on every week of your life and create meaningful
-                  moments.
-                </p>
-              </div>
+        <section className="md:py-48 py-10 px-4 md:px-20 text-center">
+          <div className="flex flex-col md:flex-row items-center justify-around gap-8">
+            <div className="flex flex-col justify-center items-center gap-4">
+              <LottiePlayer
+                data={timelineAnimation}
+                style={{ width: '100%', maxWidth: '400px', height: 'auto' }}
+              />
+              <h1 className="text-5xl font-bold">Interactive Life Timeline</h1>
+              <p className="max-w-2xl text-lg text-foreground">
+                Visualize your entire life, week by week, on an 75-year timeline
+                to gain a profound perspective on time.
+              </p>
+            </div>
+            <div>
+              <img alt="grid-image" src={grid.src} />
             </div>
           </div>
         </section>
 
-        {/* Weekly Posts Section */}
-        <section className="py-20 px-5">
-          <div className="max-w-7xl mx-auto text-center flex flex-col items-center">
-            <h2 className="text-3xl font-bold mb-8">
-              Create a Post for Each Week of Your Life
-            </h2>
-            <p className="text-lg max-w-2xl mx-auto mb-12">
-              For each week, you can create a post to reflect on your
-              experiences, set goals, and capture memories. Each post becomes a
-              part of your timeline, reminding you to live fully in the present.
-            </p>
-            <AuthButton className="border-none" />
+        <section className="md:py-48 py-10 px-4 md:px-20 text-center">
+          <div className="flex flex-col-reverse md:flex-row items-center justify-around gap-8">
+            <div>
+              <img alt="create-image" src={create.src} />
+            </div>
+            <div className="flex flex-col justify-center items-center gap-4">
+              <LottiePlayer
+                data={journalAnimation}
+                style={{ width: '100%', maxWidth: '400px', height: 'auto' }}
+              />
+              <h1 className="text-5xl font-bold">Personal Memory Journal</h1>
+              <p className="max-w-2xl text-lg text-foreground">
+                Add photos, notes, and emotions to each week, creating a rich
+                tapestry of your life&apos;s experiences.
+              </p>
+            </div>
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="py-6 bg-background text-foreground text-center">
-          <p className="text-sm">© 2024 Memento Mori. All Rights Reserved.</p>
-        </footer>
+        <section className="md:py-48 py-10 px-4 md:px-20 text-center">
+          <div className="flex flex-col md:flex-row items-center justify-around gap-8">
+            <div className="flex flex-col justify-center items-center gap-4">
+              <LottiePlayer
+                data={feedAnimation}
+                style={{ width: '100%', maxWidth: '400px', height: 'auto' }}
+              />
+              <h1 className="text-5xl font-bold">Mementos Feed</h1>
+              <p className="max-w-2xl text-lg text-foreground">
+                Browse a personalized feed of all your added mementos, allowing
+                you to reflect on your life&apos;s journey and revisit cherished
+                memories anytime.
+              </p>
+            </div>
+            <div>
+              <img alt="gallery-image" src={gallery.src} />
+            </div>
+          </div>
+        </section>
+
+        <section className="md:py-48 py-10 px-4 md:px-20 text-center">
+          <div className="text-center flex flex-col items-center">
+            <h1 className="text-5xl font-bold mb-4">
+              Embark on a Journey of Self-Discovery
+            </h1>
+            <p className="text-lg text-foreground">
+              Join thousands who are living more intentionally and making every
+              week count.
+            </p>
+            <AuthButton className="border-none text-foreground mt-8" />
+          </div>
+        </section>
       </div>
     </div>
   );

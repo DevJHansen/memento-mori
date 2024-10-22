@@ -14,7 +14,7 @@ export default function AuthNavbar() {
 
   return (
     <nav className="bg-background shadow-foreground shadow-sm border-foreground sticky w-screen top-0 z-50">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-8 md:px-12 lg:px-16">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center justify-between w-full">
             <div className="text-background font-bold text-xl">
@@ -27,12 +27,6 @@ export default function AuthNavbar() {
                   href="/app"
                 >
                   Home
-                </Link>
-                <Link
-                  className="hover:text-accent px-3 py-2 rounded-md text-sm font-medium"
-                  href="/app/lifeline"
-                >
-                  Lifeline
                 </Link>
                 <Link
                   className="hover:text-accent px-3 py-2 rounded-md text-sm font-medium"
@@ -80,13 +74,6 @@ export default function AuthNavbar() {
             onClick={() => setIsOpen(false)}
           >
             Home
-          </Link>
-          <Link
-            className="hover:text-accent block px-3 py-2 rounded-md text-base font-medium text-right w-full"
-            href="/app/lifeline"
-            onClick={() => setIsOpen(false)}
-          >
-            Lifeline
           </Link>
           <Link
             className="hover:text-accent block px-3 py-2 rounded-md text-base font-medium text-right w-full"

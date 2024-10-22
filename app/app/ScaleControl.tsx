@@ -5,7 +5,7 @@ interface Props {
 
 export default function ScaleControl({ scale, setScale }: Props) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 p-8 shadow-lg flex items-center justify-center z-50">
+    <div className="fixed bottom-0 left-0 right-0 p-8 shadow-lg flex items-center justify-center z-40">
       <input
         type="range"
         min="1"

@@ -9,12 +9,12 @@ import { Account, NewAccount } from '@/schemas/account';
 import { getAuthToken } from '@/lib/firebase/auth';
 import { useRecoilState } from 'recoil';
 import { accountState } from './ProtectedRoute';
-import { MdSettings } from 'react-icons/md';
 
 interface SignupFormData {
   firstName: string;
   surname: string;
   dateOfBirth: string;
+  weeklyReminders: boolean;
 }
 
 export default function CompleteSignUp() {
@@ -25,6 +25,7 @@ export default function CompleteSignUp() {
     firstName: '',
     surname: '',
     dateOfBirth: '',
+    weeklyReminders: false,
   });
   const [, setAccount] = useRecoilState(accountState);
 
@@ -56,7 +57,7 @@ export default function CompleteSignUp() {
           month: dateObject.getUTCMonth() + 1,
           year: dateObject.getUTCFullYear(),
         },
-        plan: 'pro',
+        weeklyReminders: formData.weeklyReminders,
       };
 
       const res = await fetch('/api/accounts/me', {
@@ -95,29 +96,6 @@ export default function CompleteSignUp() {
     formData.firstName &&
     formData.surname &&
     selectedDateTimestamp < timestampNow;
-
-  if (!isFormValid) {
-    return (
-      <div className="text-foreground flex flex-col items-center space-y-4">
-        <MdSettings size={48} className="text-accent" />
-        <h1 className="font-bold text-2xl">
-          We&apos;re still adding the finishing touches.
-        </h1>
-        <p className="text-sm">
-          If you&apos;re interested in trying out the app you can follow me on{' '}
-          <a
-            target="_blank"
-            rel="noreferrer"
-            className="text-accent"
-            href="https://x.com/BuiltBy_Justin"
-          >
-            <u>X</u>
-          </a>{' '}
-          for updates.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="h-screen overflow-auto flex justify-center items-center">

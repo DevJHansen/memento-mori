@@ -38,14 +38,23 @@ export const getMementoCache = async (): Promise<MementoCache> => {
   }
 };
 
-export const getMementos = async (page: number): Promise<GetMementosResult> => {
+export const getMementos = async (
+  page: number,
+  search?: string
+): Promise<GetMementosResult> => {
+  let queryParams = `?page=${page}`;
+
+  if (search) {
+    queryParams += `&search=${search}`;
+  }
+
   try {
     const token = await getAuthToken();
     if (!token) {
       throw new Error('Unable to retrieve authentication token.');
     }
 
-    const res = await fetch(`/api/mementos?page=${page}`, {
+    const res = await fetch(`/api/mementos${queryParams}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

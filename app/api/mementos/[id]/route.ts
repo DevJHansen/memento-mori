@@ -73,9 +73,14 @@ export async function PUT(req: NextRequest) {
 
   try {
     const formSchema = z.object({
-      title: z.string().min(1, 'Title is required'),
-      bodyContent: z.string().min(1, 'Body content is required'),
-      heroImageFile: z.instanceof(File).optional(),
+      title: z.string().min(1, 'Title is required').max(100),
+      bodyContent: z.string().min(1, 'Body content is required').max(1000),
+      heroImageFile: z
+        .instanceof(File)
+        .refine((file) => file.size > DEFAULT_MAX_IMAGE_SIZE, {
+          message: 'Image too large',
+        })
+        .optional(),
     });
 
     const body = await req.formData();

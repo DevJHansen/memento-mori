@@ -11,9 +11,16 @@ import { MdAdd } from 'react-icons/md';
 interface Props {
   memento: Memento;
   account: Account;
+  handleView: (memento: Memento, index: number) => void;
+  index: number;
 }
 
-export default function MementoCard({ memento, account }: Props) {
+export default function MementoCard({
+  memento,
+  account,
+  handleView,
+  index,
+}: Props) {
   const [image, setImage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -39,7 +46,10 @@ export default function MementoCard({ memento, account }: Props) {
   }, [image, memento.heroImage.url]);
 
   return (
-    <div className="relative max-w-sm w-full h-64 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-all duration-300">
+    <div
+      className="relative max-w-sm w-full h-64 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-all duration-300"
+      onClick={() => handleView(memento, index)}
+    >
       <div className="w-full h-full bg-backgroundSecondary absolute inset-0">
         <img
           className={`w-full h-full object-cover transition-opacity duration-500 ${
