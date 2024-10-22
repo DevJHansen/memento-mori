@@ -6,7 +6,7 @@ import { getMementos } from '@/lib/api/momento';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 function SearchComponent() {
-  const [mementos, setMementos] = useRecoilState(mementosState);
+  const [, setMementos] = useRecoilState(mementosState);
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [searchLoading, setSearchLoading] = useState(false);
@@ -42,7 +42,7 @@ function SearchComponent() {
     }, 500);
 
     return () => clearTimeout(debounceTimeout);
-  }, [search]);
+  }, [search, setMementos]);
 
   const handleSearch = async (value: string) => {
     setSearch(value);
